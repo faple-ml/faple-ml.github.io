@@ -5,83 +5,136 @@
     <url>/2020/09/22/Regression_Algorithms/</url>
     <content><![CDATA[<p>机器学习</p>
 <a id="more"></a>
-<h2 id="线性回归"><a href="# 线性回归" class="headerlink" title="线性回归"></a>线性回归</h2><ul>
-<li><p>银行判断用户贷款额度</p>
-<p>| 工资（$x_1$） | 年龄（$x_2$） | 额度（$y$） |<br>| ——————- | ——————- | —————- |<br>| 4000          | 25            | 20000       |<br>| 8000          | 30            | 70000       |<br>| 5000          | 28            | 35000       |<br>| 7500          | 33            | 50000       |<br>| 12000         | 40            | 85000       |</p>
+<h2 id="线性回归">线性回归</h2>
 <ul>
-<li><p>建立模型</p>
-<p>$\begin{aligned} h<em>{\theta}(x) &amp; = \theta_0 + \theta_1x_1 + \theta_2x_2 \ &amp; = \sum</em>{i=0}^{2}\theta_ix_i \ &amp; = \theta^Tx \end{aligned}$</p>
+<li>
+<p>银行判断用户贷款额度</p>
+<table>
+<thead>
+<tr>
+<th>工资（<img src="https://math.now.sh?inline=x_1" style="display:inline-block;margin: 0;"/>）</th>
+<th>年龄（<img src="https://math.now.sh?inline=x_2" style="display:inline-block;margin: 0;"/>）</th>
+<th>额度（<img src="https://math.now.sh?inline=y" style="display:inline-block;margin: 0;"/>）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4000</td>
+<td>25</td>
+<td>20000</td>
+</tr>
+<tr>
+<td>8000</td>
+<td>30</td>
+<td>70000</td>
+</tr>
+<tr>
+<td>5000</td>
+<td>28</td>
+<td>35000</td>
+</tr>
+<tr>
+<td>7500</td>
+<td>33</td>
+<td>50000</td>
+</tr>
+<tr>
+<td>12000</td>
+<td>40</td>
+<td>85000</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<p>建立模型</p>
+<p><img src="https://math.now.sh?inline=%5Cbegin%7Baligned%7D%20h_%7B%5Ctheta%7D%28x%29%20%26%20%3D%20%5Ctheta_0%20%2B%20%5Ctheta_1x_1%20%2B%20%5Ctheta_2x_2%20%5C%5C%20%26%20%3D%20%5Csum_%7Bi%3D0%7D%5E%7B2%7D%5Ctheta_ix_i%20%5C%5C%20%26%20%3D%20%5Ctheta%5ETx%20%5Cend%7Baligned%7D" style="display:inline-block;margin: 0;"/></p>
 <p>于是额度可以表示为</p>
-<p>$\underbrace{y^{(i)}}<em>{真实值} = \underbrace{\theta^Tx^{(i)}}</em>{预测值} + \underbrace{\varepsilon^{(i)}}_{误差} \tag{1}$</p>
-<p>其中误差 $\varepsilon^{(i)}$ 是 <em> 独立 </em>（样本直接无关联）且<em> 具有相同分布 </em>（大部分误差在一个范围中）的，通常被认为服从均值为 0、方差为 $\theta^2$ 的<strong> 高斯分布</strong></p>
+<p><img src="https://math.now.sh?inline=%5Cunderbrace%7By%5E%7B%28i%29%7D%7D_%7B%E7%9C%9F%E5%AE%9E%E5%80%BC%7D%20%3D%20%5Cunderbrace%7B%5Ctheta%5ETx%5E%7B(i)%7D%7D_%7B%E9%A2%84%E6%B5%8B%E5%80%BC%7D%20%2B%20%5Cunderbrace%7B%5Cvarepsilon%5E%7B(i)%7D%7D_%7B%E8%AF%AF%E5%B7%AE%7D%20%5Ctag%7B1%7D" style="display:inline-block;margin: 0;"/></p>
+<p>其中误差 <img src="https://math.now.sh?inline=%5Cvarepsilon%5E%7B%28i%29%7D" style="display:inline-block;margin: 0;"/> 是_独立_（样本直接无关联）且_具有相同分布_（大部分误差在一个范围中）的，通常被认为服从均值为 0、方差为 <img src="https://math.now.sh?inline=%5Ctheta%5E2" style="display:inline-block;margin: 0;"/> 的 <strong> 高斯分布</strong></p>
 <ul>
-<li><p>假设误差分布为 $p$ （高斯分布（均值为 0））</p>
-<p>$p(\varepsilon^{(i)}) = \frac{1}{\sqrt{2\pi}\sigma} \exp(-\frac{(\varepsilon^{(i)})^2}{2\sigma^2})$</p>
-<p>其中 $\exp(n) = e^n$</p>
-<p>用 $(1)$ 替换误差，得到</p>
-<p>$p(y^{(i)}|x^{(i)};\theta) = \frac{1}{\sqrt{2\pi}\sigma} \exp(-\frac{(y^{(i)}-\theta^Tx^{(i)})^2}{2\sigma^2}) \tag{2}$</p>
-<p>这里 $p(y^{(i)}|x^{(i)};\theta) \in [0,1]$，即 $p$ 为概率值，它越接近 1，概率越大，预测值越接近真实值</p>
+<li>
+<p>假设误差分布为 <img src="https://math.now.sh?inline=p" style="display:inline-block;margin: 0;"/> （高斯分布（均值为 0））</p>
+<p><img src="https://math.now.sh?inline=p%28%5Cvarepsilon%5E%7B(i%29%7D)%20%3D%20%5Cfrac%7B1%7D%7B%5Csqrt%7B2%5Cpi%7D%5Csigma%7D%20%5Cexp(-%5Cfrac%7B(%5Cvarepsilon%5E%7B(i)%7D)%5E2%7D%7B2%5Csigma%5E2%7D)" style="display:inline-block;margin: 0;"/></p>
+<p>其中 <img src="https://math.now.sh?inline=%5Cexp%28n%29%20%3D%20e%5En" style="display:inline-block;margin: 0;"/></p>
+<p>用 <img src="https://math.now.sh?inline=%281%29" style="display:inline-block;margin: 0;"/> 替换误差，得到</p>
+<p><img src="https://math.now.sh?inline=p%28y%5E%7B(i%29%7D%7Cx%5E%7B(i)%7D%3B%5Ctheta)%20%3D%20%5Cfrac%7B1%7D%7B%5Csqrt%7B2%5Cpi%7D%5Csigma%7D%20%5Cexp(-%5Cfrac%7B(y%5E%7B(i)%7D-%5Ctheta%5ETx%5E%7B(i)%7D)%5E2%7D%7B2%5Csigma%5E2%7D)%20%5Ctag%7B2%7D" style="display:inline-block;margin: 0;"/></p>
+<p>这里 <img src="https://math.now.sh?inline=p%28y%5E%7B(i%29%7D%7Cx%5E%7B(i)%7D%3B%5Ctheta)%20%5Cin%20%5B0%2C1%5D" style="display:inline-block;margin: 0;"/>，即 <img src="https://math.now.sh?inline=p" style="display:inline-block;margin: 0;"/> 为概率值，它越接近 1，概率越大，预测值越接近真实值</p>
 </li>
-<li><p>则 <strong> 似然函数 </strong> 为<em>（累乘所有样本的概率值，使 $L(\theta)$ 尽可能大）</em></p>
-<p>$\begin{aligned} L(\theta) &amp; = \prod<em>{i=1}^{m}p(y^{(i)}|x^{(i)};\theta) \ &amp; = \prod</em>{i=1}^{m} \frac{1}{\sqrt{2\pi}\sigma} \exp(-\frac{(y^{(i)}-\theta^Tx^{(i)})^2}{2\sigma^2}) \end{aligned} \tag{3}$</p>
-<p>为了方便计算，我们将 $L(\theta)$ 中的乘法转换成加法运算，即 <strong> 对数似然函数 </strong> 为</p>
-<p>$\begin{aligned} l(\theta) &amp; = \log L(\theta) \ &amp; = \log \prod<em>{i=1}^{m} \frac{1}{\sqrt{2\pi}\sigma} \exp(-\frac{(y^{(i)}-\theta^Tx^{(i)})^2}{2\sigma^2}) \ &amp; = \sum</em>{i=1}^{m}\log \frac{1}{\sqrt{2\pi}\sigma} \exp(-\frac{(y^{(i)}-\theta^Tx^{(i)})^2}{2\sigma^2}) \ &amp; = m \log \frac{1}{\sqrt{2\pi}\sigma} - \frac{1}{\sigma^2} \cdot \frac12 \sum_{i=1}^{m} (y^{(i)}-\theta^Tx^{(i)})^2 \end{aligned} \tag{4}$</p>
+<li>
+<p>则 <strong> 似然函数 </strong> 为_（累乘所有样本的概率值，使 <img src="https://math.now.sh?inline=L%28%5Ctheta%29" style="display:inline-block;margin: 0;"/> 尽可能大）_</p>
+<p><img src="https://math.now.sh?inline=%5Cbegin%7Baligned%7D%20L%28%5Ctheta%29%20%26%20%3D%20%5Cprod_%7Bi%3D1%7D%5E%7Bm%7Dp(y%5E%7B(i)%7D%7Cx%5E%7B(i)%7D%3B%5Ctheta)%20%5C%5C%20%26%20%3D%20%5Cprod_%7Bi%3D1%7D%5E%7Bm%7D%20%5Cfrac%7B1%7D%7B%5Csqrt%7B2%5Cpi%7D%5Csigma%7D%20%5Cexp(-%5Cfrac%7B(y%5E%7B(i)%7D-%5Ctheta%5ETx%5E%7B(i)%7D)%5E2%7D%7B2%5Csigma%5E2%7D)%20%5Cend%7Baligned%7D%20%5Ctag%7B3%7D" style="display:inline-block;margin: 0;"/></p>
+<p>为了方便计算，我们将 <img src="https://math.now.sh?inline=L%28%5Ctheta%29" style="display:inline-block;margin: 0;"/> 中的乘法转换成加法运算，即 <strong> 对数似然函数 </strong> 为</p>
+<p><img src="https://math.now.sh?inline=%5Cbegin%7Baligned%7D%20l%28%5Ctheta%29%20%26%20%3D%20%5Clog%20L(%5Ctheta)%20%5C%5C%20%26%20%3D%20%5Clog%20%5Cprod_%7Bi%3D1%7D%5E%7Bm%7D%20%5Cfrac%7B1%7D%7B%5Csqrt%7B2%5Cpi%7D%5Csigma%7D%20%5Cexp(-%5Cfrac%7B(y%5E%7B(i)%7D-%5Ctheta%5ETx%5E%7B(i)%7D)%5E2%7D%7B2%5Csigma%5E2%7D)%20%5C%5C%20%26%20%3D%20%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%5Clog%20%5Cfrac%7B1%7D%7B%5Csqrt%7B2%5Cpi%7D%5Csigma%7D%20%5Cexp(-%5Cfrac%7B(y%5E%7B(i)%7D-%5Ctheta%5ETx%5E%7B(i)%7D)%5E2%7D%7B2%5Csigma%5E2%7D)%20%5C%5C%20%26%20%3D%20m%20%5Clog%20%5Cfrac%7B1%7D%7B%5Csqrt%7B2%5Cpi%7D%5Csigma%7D%20-%20%5Cfrac%7B1%7D%7B%5Csigma%5E2%7D%20%5Ccdot%20%5Cfrac12%20%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%20(y%5E%7B(i)%7D-%5Ctheta%5ETx%5E%7B(i)%7D)%5E2%20%5Cend%7Baligned%7D%20%5Ctag%7B4%7D" style="display:inline-block;margin: 0;"/></p>
 </li>
-<li><p>因为 $l(\theta)$ 的前半部分 $m \log \frac{1}{\sqrt{2\pi}\sigma}$ 为常数，不会被 $\theta$ 改变，所以要使 $l(\theta)$ 尽可能大，它的后半部分 $\frac{1}{\sigma^2} \cdot \frac12 \sum_{i=1}^{m} (y^{(i)}-\theta^Tx^{(i)})^2$ 需要尽可能小（这里后半部分一定大于 0，所以需要使其尽可能接近 0）。最后得到 <strong> 目标函数</strong></p>
-<p>$J(\theta) = \frac12 \sum<em>{i=1}^{m}(h</em>{\theta}(x^{(i)})-y^{(i)})^2 \tag{5}$</p>
-<p>（留下 $\frac12$ 方便求导）</p>
-<p>我们的目标是找到 <em> 使 $J(\theta)$ 尽可能小的 $\theta$ 值</em>。</p>
+<li>
+<p>因为 <img src="https://math.now.sh?inline=l%28%5Ctheta%29" style="display:inline-block;margin: 0;"/> 的前半部分 <img src="https://math.now.sh?inline=m%20%5Clog%20%5Cfrac%7B1%7D%7B%5Csqrt%7B2%5Cpi%7D%5Csigma%7D" style="display:inline-block;margin: 0;"/> 为常数，不会被 <img src="https://math.now.sh?inline=%5Ctheta" style="display:inline-block;margin: 0;"/> 改变，所以要使 <img src="https://math.now.sh?inline=l%28%5Ctheta%29" style="display:inline-block;margin: 0;"/> 尽可能大，它的后半部分 <img src="https://math.now.sh?inline=%5Cfrac%7B1%7D%7B%5Csigma%5E2%7D%20%5Ccdot%20%5Cfrac12%20%5Csum_%7Bi%3D1%7D%5E%7Bm%7D%20%28y%5E%7B(i%29%7D-%5Ctheta%5ETx%5E%7B(i)%7D)%5E2" style="display:inline-block;margin: 0;"/> 需要尽可能小（这里后半部分一定大于 0，所以需要使其尽可能接近 0）。最后得到 <strong> 目标函数</strong></p>
+<p><img src="https://math.now.sh?inline=J%28%5Ctheta%29%20%3D%20%5Cfrac12%20%5Csum_%7Bi%3D1%7D%5E%7Bm%7D(h_%7B%5Ctheta%7D(x%5E%7B(i)%7D)-y%5E%7B(i)%7D)%5E2%20%5Ctag%7B5%7D" style="display:inline-block;margin: 0;"/></p>
+<p>（留下 <img src="https://math.now.sh?inline=%5Cfrac12" style="display:inline-block;margin: 0;"/> 方便求导）</p>
+<p>我们的目标是找到_使 <img src="https://math.now.sh?inline=J%28%5Ctheta%29" style="display:inline-block;margin: 0;"/> 尽可能小的 <img src="https://math.now.sh?inline=%5Ctheta" style="display:inline-block;margin: 0;"/> 值_。</p>
 </li>
-<li><p>用矩阵形式表示 $(5)$ 中 $(h_{\theta}(x^{(i)})-y^{(i)})^2$</p>
-<p>$J(\theta) = \frac12 (X\theta-y)^T(X\theta-y)$</p>
+<li>
+<p>用矩阵形式表示 <img src="https://math.now.sh?inline=%285%29" style="display:inline-block;margin: 0;"/> 中 <img src="https://math.now.sh?inline=%28h_%7B%5Ctheta%7D(x%5E%7B(i%29%7D)-y%5E%7B(i)%7D)%5E2" style="display:inline-block;margin: 0;"/></p>
+<p><img src="https://math.now.sh?inline=J%28%5Ctheta%29%20%3D%20%5Cfrac12%20(X%5Ctheta-y)%5ET(X%5Ctheta-y)" style="display:inline-block;margin: 0;"/></p>
 </li>
-<li><p>为了求 $J(\theta)$ 的极值，需要对 $\theta$ <em>求导</em></p>
-<p>$\begin{aligned} \nabla<em>\theta J(\theta) &amp; = \nabla</em>\theta (\frac12 (X\theta-y)^T(X\theta-y)) \ &amp; = \nabla<em>\theta (\frac12 (\theta^TX^T-y^T)(X\theta-y)) \ &amp; = \nabla</em>\theta (\frac12 (\theta^TX^TX\theta - \theta^TX^Ty - y^TX\theta + y^Ty)) \ &amp; = \frac12 (2X^TX\theta - X^Ty - (y^TX)^T) \ &amp; = X^TX\theta - X^Ty \end{aligned}$</p>
-<p>令 $\nabla_\theta J(\theta)=0$，即 $X^TX\theta - X^Ty=0$，则</p>
-<p>$\theta = (X^TX)^{-1}X^Ty \tag{6}$</p>
+<li>
+<p>为了求 <img src="https://math.now.sh?inline=J%28%5Ctheta%29" style="display:inline-block;margin: 0;"/> 的极值，需要对 <img src="https://math.now.sh?inline=%5Ctheta" style="display:inline-block;margin: 0;"/> <em>求导</em></p>
+<p><img src="https://math.now.sh?inline=%5Cbegin%7Baligned%7D%20%5Cnabla_%5Ctheta%20J%28%5Ctheta%29%20%26%20%3D%20%5Cnabla_%5Ctheta%20(%5Cfrac12%20(X%5Ctheta-y)%5ET(X%5Ctheta-y))%20%5C%5C%20%26%20%3D%20%5Cnabla_%5Ctheta%20(%5Cfrac12%20(%5Ctheta%5ETX%5ET-y%5ET)(X%5Ctheta-y))%20%5C%5C%20%26%20%3D%20%5Cnabla_%5Ctheta%20(%5Cfrac12%20(%5Ctheta%5ETX%5ETX%5Ctheta%20-%20%5Ctheta%5ETX%5ETy%20-%20y%5ETX%5Ctheta%20%2B%20y%5ETy))%20%5C%5C%20%26%20%3D%20%5Cfrac12%20(2X%5ETX%5Ctheta%20-%20X%5ETy%20-%20(y%5ETX)%5ET)%20%5C%5C%20%26%20%3D%20X%5ETX%5Ctheta%20-%20X%5ETy%20%5Cend%7Baligned%7D" style="display:inline-block;margin: 0;"/></p>
+<p>令 <img src="https://math.now.sh?inline=%5Cnabla_%5Ctheta%20J%28%5Ctheta%29%3D0" style="display:inline-block;margin: 0;"/>，即 <img src="https://math.now.sh?inline=X%5ETX%5Ctheta%20-%20X%5ETy%3D0" style="display:inline-block;margin: 0;"/>，则</p>
+<p><img src="https://math.now.sh?inline=%5Ctheta%20%3D%20%28X%5ETX%29%5E%7B-1%7DX%5ETy%20%5Ctag%7B6%7D" style="display:inline-block;margin: 0;"/></p>
 </li>
 </ul>
 </li>
 </ul>
 </li>
 </ul>
-<h2 id="Logistic- 回归"><a href="#Logistic- 回归" class="headerlink" title="Logistic 回归"></a>Logistic 回归 </h2><p> 是一个分类算法</p>
+<h2 id="Logistic- 回归">Logistic 回归</h2>
+<p>是一个分类算法</p>
 <ul>
-<li><p>S 函数（Sigmoid 函数）</p>
+<li>
+<p>S 函数（Sigmoid 函数）</p>
 <p><img src="Regression-Algorithm.assets/790418-20181107181130984-1052306153.png" alt="img"></p>
 <ul>
-<li><p>$g(z) = \frac{1}{1+e^{(-z)}}$</p>
+<li>
+<p><img src="https://math.now.sh?inline=g%28z%29%20%3D%20%5Cfrac%7B1%7D%7B1%2Be%5E%7B(-z)%7D%7D" style="display:inline-block;margin: 0;"/></p>
 </li>
-<li><p>取值范围 $x \in (-\infty,+\infty),\ y \in (0,1)$</p>
+<li>
+<p>取值范围 <img src="https://math.now.sh?inline=x%20%5Cin%20%28-%5Cinfty%2C%2B%5Cinfty%29%2C%5C%20y%20%5Cin%20(0%2C1)" style="display:inline-block;margin: 0;"/></p>
 </li>
-<li><p>建模</p>
+<li>
+<p>建模</p>
 <ul>
-<li><p>令 </p>
-<p>$h_\theta(x) = g(\theta^Tx) = \frac{1}{1+e^{-\theta^Tx}}$</p>
-<p>这里符号含义同上，即 $h_\theta(x)$ 是预测值</p>
+<li>
+<p>令</p>
+<p><img src="https://math.now.sh?inline=h_%5Ctheta%28x%29%20%3D%20g(%5Ctheta%5ETx)%20%3D%20%5Cfrac%7B1%7D%7B1%2Be%5E%7B-%5Ctheta%5ETx%7D%7D" style="display:inline-block;margin: 0;"/></p>
+<p>这里符号含义同上，即 <img src="https://math.now.sh?inline=h_%5Ctheta%28x%29" style="display:inline-block;margin: 0;"/> 是预测值</p>
 </li>
 </ul>
 </li>
 </ul>
 </li>
-<li><p>梯度下降</p>
+<li>
+<p>梯度下降</p>
 <ul>
-<li><p>$\theta$ 是无法一步优化到位的，我们需要一步一步使 $\theta$ 向函数的“坡下”走，这个向下走的“方向”就是函数在当前位置对 $\theta$ 的偏导数。</p>
+<li>
+<p><img src="https://math.now.sh?inline=%5Ctheta" style="display:inline-block;margin: 0;"/> 是无法一步优化到位的，我们需要一步一步使 <img src="https://math.now.sh?inline=%5Ctheta" style="display:inline-block;margin: 0;"/> 向函数的“坡下”走，这个向下走的“方向”就是函数在当前位置对 <img src="https://math.now.sh?inline=%5Ctheta" style="display:inline-block;margin: 0;"/> 的偏导数。</p>
 </li>
-<li><p>假设数据集只有一个特征</p>
-<p>则预测值为 $h_\theta(x)=\theta_1x+\theta_0$</p>
+<li>
+<p>假设数据集只有一个特征</p>
+<p>则预测值为 <img src="https://math.now.sh?inline=h_%5Ctheta%28x%29%3D%5Ctheta_1x%2B%5Ctheta_0" style="display:inline-block;margin: 0;"/></p>
 <p>目标函数为</p>
-<p>$J(\theta<em>0,\theta_1) = \frac{1}{2m} \sum</em>{i=1}^{m}(h_{\theta}(x^{(i)})-y^{(i)})^2$</p>
-<p>（这里如果不乘 $\frac1m$，意味着训练样本越多 $J(\theta)$ 越大）</p>
-<p>对 $\theta_0$ 和 $\theta_1$ 分别求偏导</p>
-<p>$\frac{\partial J(\theta<em>0,\theta_1)}{\partial \theta_0} = \frac1m \sum</em>{i=1}^{m}(h_{\theta}(x^{(i)})-y^{(i)})$</p>
-<p>$\frac{\partial J(\theta<em>0,\theta_1)}{\partial \theta_1} = \frac{1}{m} \sum</em>{i=1}^{m}(h_{\theta}(x^{(i)})-y^{(i)}) * x^{(i)}$</p>
-<p>使每个参数沿梯度下降方向前进 $\alpha$ 步</p>
-<p>$\theta_0 := \theta_0 - \alpha * \frac{\partial J(\theta_0,\theta_1)}{\partial \theta_0}$</p>
-<p>$\theta_1 := \theta_1 - \alpha * \frac{\partial J(\theta_0,\theta_1)}{\partial \theta_1}$</p>
-<p>这里 $\alpha$ 称为 <strong> 学习率</strong>（或步长），步长过大可能略过最优点，步长太小迭代速度太慢。</p>
+<p><img src="https://math.now.sh?inline=J%28%5Ctheta_0%2C%5Ctheta_1%29%20%3D%20%5Cfrac%7B1%7D%7B2m%7D%20%5Csum_%7Bi%3D1%7D%5E%7Bm%7D(h_%7B%5Ctheta%7D(x%5E%7B(i)%7D)-y%5E%7B(i)%7D)%5E2" style="display:inline-block;margin: 0;"/></p>
+<p>（这里如果不乘 <img src="https://math.now.sh?inline=%5Cfrac1m" style="display:inline-block;margin: 0;"/>，意味着训练样本越多 <img src="https://math.now.sh?inline=J%28%5Ctheta%29" style="display:inline-block;margin: 0;"/> 越大）</p>
+<p>对 <img src="https://math.now.sh?inline=%5Ctheta_0" style="display:inline-block;margin: 0;"/> 和 <img src="https://math.now.sh?inline=%5Ctheta_1" style="display:inline-block;margin: 0;"/> 分别求偏导</p>
+<p><img src="https://math.now.sh?inline=%5Cfrac%7B%5Cpartial%20J%28%5Ctheta_0%2C%5Ctheta_1%29%7D%7B%5Cpartial%20%5Ctheta_0%7D%20%3D%20%5Cfrac1m%20%5Csum_%7Bi%3D1%7D%5E%7Bm%7D(h_%7B%5Ctheta%7D(x%5E%7B(i)%7D)-y%5E%7B(i)%7D)" style="display:inline-block;margin: 0;"/></p>
+<p><img src="https://math.now.sh?inline=%5Cfrac%7B%5Cpartial%20J%28%5Ctheta_0%2C%5Ctheta_1%29%7D%7B%5Cpartial%20%5Ctheta_1%7D%20%3D%20%5Cfrac%7B1%7D%7Bm%7D%20%5Csum_%7Bi%3D1%7D%5E%7Bm%7D(h_%7B%5Ctheta%7D(x%5E%7B(i)%7D)-y%5E%7B(i)%7D)%20*%20x%5E%7B(i)%7D" style="display:inline-block;margin: 0;"/></p>
+<p>使每个参数沿梯度下降方向前进 <img src="https://math.now.sh?inline=%5Calpha" style="display:inline-block;margin: 0;"/> 步</p>
+<p><img src="https://math.now.sh?inline=%5Ctheta_0%20%3A%3D%20%5Ctheta_0%20-%20%5Calpha%20*%20%5Cfrac%7B%5Cpartial%20J%28%5Ctheta_0%2C%5Ctheta_1%29%7D%7B%5Cpartial%20%5Ctheta_0%7D" style="display:inline-block;margin: 0;"/></p>
+<p><img src="https://math.now.sh?inline=%5Ctheta_1%20%3A%3D%20%5Ctheta_1%20-%20%5Calpha%20*%20%5Cfrac%7B%5Cpartial%20J%28%5Ctheta_0%2C%5Ctheta_1%29%7D%7B%5Cpartial%20%5Ctheta_1%7D" style="display:inline-block;margin: 0;"/></p>
+<p>这里 <img src="https://math.now.sh?inline=%5Calpha" style="display:inline-block;margin: 0;"/> 称为 <strong> 学习率</strong>（或步长），步长过大可能略过最优点，步长太小迭代速度太慢。</p>
 </li>
-<li><p>当参数经过迭代后改变很小时，迭代结束，我们认为当前 $\theta$ 是（或近似）最优解。</p>
+<li>
+<p>当参数经过迭代后改变很小时，迭代结束，我们认为当前 <img src="https://math.now.sh?inline=%5Ctheta" style="display:inline-block;margin: 0;"/> 是（或近似）最优解。</p>
 </li>
 </ul>
 </li>
@@ -101,13 +154,18 @@
     <url>/2020/09/22/hello-world/</url>
     <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
 <a id="more"></a>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Quick-Start">Quick Start</h2>
+<h3 id="Create-a-new-post">Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<h3 id="Run-server">Run server</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<h3 id="Generate-static-files">Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<h3 id="Deploy-to-remote-sites">Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 ]]></content>
   </entry>
