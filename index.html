@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
@@ -14,18 +14,21 @@
 
 
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
+<meta property="og:title" content="枫落的Blog">
 <meta property="og:url" content="http://example.com/index.html">
-<meta property="og:site_name" content="Hexo">
-<meta property="og:locale" content="en_US">
-<meta property="article:author" content="John Doe">
+<meta property="og:site_name" content="枫落的Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="枫落">
+<meta property="article:tag" content="blog">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://example.com/">
@@ -37,14 +40,23 @@
     sidebar: "",
     isHome : true,
     isPost : false,
-    lang   : 'en'
+    lang   : 'zh-CN'
   };
 </script>
 
-  <title>Hexo</title>
+  <title>枫落的Blog</title>
   
 
 
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?c4bc574efe581c2cfdcc64f9cea2087f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
 
 
 
@@ -81,7 +93,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Toggle navigation bar">
+    <div class="toggle" aria-label="切换导航栏">
       <span class="toggle-line toggle-line-first"></span>
       <span class="toggle-line toggle-line-middle"></span>
       <span class="toggle-line toggle-line-last"></span>
@@ -92,13 +104,14 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Hexo</h1>
+      <h1 class="site-title">枫落的Blog</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -110,19 +123,61 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
   </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
   </ul>
 </nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </div>
     </header>
@@ -144,22 +199,22 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/22/Regression-Algorithm/">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/22/Regression_Algorithms/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="枫落">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="枫落的Blog">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2020/09/22/Regression-Algorithm/" class="post-title-link" itemprop="url">回归算法 Regression Algorithm</a>
+            <a href="/2020/09/22/Regression_Algorithms/" class="post-title-link" itemprop="url">回归算法 Regression Algorithm</a>
         </h2>
 
         <div class="post-meta">
@@ -167,10 +222,19 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="Created: 2020-09-22 15:43:39 / Modified: 15:49:36" itemprop="dateCreated datePublished" datetime="2020-09-22T15:43:39+08:00">2020-09-22</time>
+              <time title="创建时间：2020-09-22 15:43:39 / 修改时间：22:56:42" itemprop="dateCreated datePublished" datetime="2020-09-22T15:43:39+08:00">2020-09-22</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+                </span>
             </span>
 
           
@@ -184,121 +248,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="线性回归"><a href="#线性回归" class="headerlink" title="线性回归"></a>线性回归</h2><ul>
-<li><p>银行判断用户贷款额度</p>
-<table>
-<thead>
-<tr>
-<th>工资（$x_1$）</th>
-<th>年龄（$x_2$）</th>
-<th>额度（$y$）</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>4000</td>
-<td>25</td>
-<td>20000</td>
-</tr>
-<tr>
-<td>8000</td>
-<td>30</td>
-<td>70000</td>
-</tr>
-<tr>
-<td>5000</td>
-<td>28</td>
-<td>35000</td>
-</tr>
-<tr>
-<td>7500</td>
-<td>33</td>
-<td>50000</td>
-</tr>
-<tr>
-<td>12000</td>
-<td>40</td>
-<td>85000</td>
-</tr>
-</tbody></table>
-<ul>
-<li><p>建立模型</p>
-<p>$\begin{aligned} h_{\theta}(x) &amp; = \theta_0 + \theta_1x_1 + \theta_2x_2 \ &amp; = \sum_{i=0}^{2}\theta_ix_i \ &amp; = \theta^Tx \end{aligned}$</p>
-<p>于是额度可以表示为</p>
-<p>$\underbrace{y^{(i)}}<em>{真实值} = \underbrace{\theta^Tx^{(i)}}</em>{预测值} + \underbrace{\varepsilon^{(i)}}_{误差} \tag{1}$</p>
-<p>其中误差 $\varepsilon^{(i)}$ 是_独立_（样本直接无关联）且_具有相同分布_（大部分误差在一个范围中）的，通常被认为服从均值为0、方差为 $\theta^2$ 的<strong>高斯分布</strong></p>
-<ul>
-<li><p>假设误差分布为 $p$ （高斯分布（均值为0））</p>
-<p>$p(\varepsilon^{(i)}) = \frac{1}{\sqrt{2\pi}\sigma} \exp(-\frac{(\varepsilon^{(i)})^2}{2\sigma^2})$</p>
-<p>其中 $\exp(n) = e^n$</p>
-<p>用 $(1)$ 替换误差，得到</p>
-<p>$p(y^{(i)}|x^{(i)};\theta) = \frac{1}{\sqrt{2\pi}\sigma} \exp(-\frac{(y^{(i)}-\theta^Tx^{(i)})^2}{2\sigma^2}) \tag{2}$</p>
-<p>这里 $p(y^{(i)}|x^{(i)};\theta) \in [0,1]$，即 $p$ 为概率值，它越接近1，概率越大，预测值越接近真实值</p>
-</li>
-<li><p>则<strong>似然函数</strong>为<em>（累乘所有样本的概率值，使 $L(\theta)$ 尽可能大）</em></p>
-<p>$\begin{aligned} L(\theta) &amp; = \prod_{i=1}^{m}p(y^{(i)}|x^{(i)};\theta) \ &amp; = \prod_{i=1}^{m} \frac{1}{\sqrt{2\pi}\sigma} \exp(-\frac{(y^{(i)}-\theta^Tx^{(i)})^2}{2\sigma^2}) \end{aligned} \tag{3}$</p>
-<p>为了方便计算，我们将 $L(\theta)$ 中的乘法转换成加法运算，即<strong>对数似然函数</strong>为</p>
-<p>$\begin{aligned} l(\theta) &amp; = \log L(\theta) \ &amp; = \log \prod_{i=1}^{m} \frac{1}{\sqrt{2\pi}\sigma} \exp(-\frac{(y^{(i)}-\theta^Tx^{(i)})^2}{2\sigma^2}) \ &amp; = \sum_{i=1}^{m}\log \frac{1}{\sqrt{2\pi}\sigma} \exp(-\frac{(y^{(i)}-\theta^Tx^{(i)})^2}{2\sigma^2}) \ &amp; = m \log \frac{1}{\sqrt{2\pi}\sigma} - \frac{1}{\sigma^2} \cdot \frac12 \sum_{i=1}^{m} (y^{(i)}-\theta^Tx^{(i)})^2 \end{aligned} \tag{4}$</p>
-</li>
-<li><p>因为 $l(\theta)$ 的前半部分 $m \log \frac{1}{\sqrt{2\pi}\sigma}$ 为常数，不会被 $\theta$ 改变，所以要使 $l(\theta)$ 尽可能大，它的后半部分 $\frac{1}{\sigma^2} \cdot \frac12 \sum_{i=1}^{m} (y^{(i)}-\theta^Tx^{(i)})^2$ 需要尽可能小（这里后半部分一定大于0，所以需要使其尽可能接近0）。最后得到<strong>目标函数</strong></p>
-<p>$J(\theta) = \frac12 \sum_{i=1}^{m}(h_{\theta}(x^{(i)})-y^{(i)})^2 \tag{5}$</p>
-<p>（留下 $\frac12$ 方便求导）</p>
-<p>我们的目标是找到_使 $J(\theta)$ 尽可能小的 $\theta$ 值_。</p>
-</li>
-<li><p>用矩阵形式表示 $(5)$ 中 $(h_{\theta}(x^{(i)})-y^{(i)})^2$</p>
-<p>$J(\theta) = \frac12 (X\theta-y)^T(X\theta-y)$</p>
-</li>
-<li><p>为了求 $J(\theta)$ 的极值，需要对 $\theta$ <em>求导</em></p>
-<p>$\begin{aligned} \nabla_\theta J(\theta) &amp; = \nabla_\theta (\frac12 (X\theta-y)^T(X\theta-y)) \ &amp; = \nabla_\theta (\frac12 (\theta^TX^T-y^T)(X\theta-y)) \ &amp; = \nabla_\theta (\frac12 (\theta^TX^TX\theta - \theta^TX^Ty - y^TX\theta + y^Ty)) \ &amp; = \frac12 (2X^TX\theta - X^Ty - (y^TX)^T) \ &amp; = X^TX\theta - X^Ty \end{aligned}$</p>
-<p>令 $\nabla_\theta J(\theta)=0$，即 $X^TX\theta - X^Ty=0$，则</p>
-<p>$\theta = (X^TX)^{-1}X^Ty \tag{6}$</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h2 id="Logistic-回归"><a href="#Logistic-回归" class="headerlink" title="Logistic 回归"></a>Logistic 回归</h2><p>是一个分类算法</p>
-<ul>
-<li><p>S 函数（Sigmoid 函数）</p>
-<p><img src="Regression-Algorithm.assets/790418-20181107181130984-1052306153.png" alt="img"></p>
-<ul>
-<li><p>$g(z) = \frac{1}{1+e^{(-z)}}$</p>
-</li>
-<li><p>取值范围 $x \in (-\infty,+\infty),\ y \in (0,1)$</p>
-</li>
-<li><p>建模</p>
-<ul>
-<li><p>令 </p>
-<p>$h_\theta(x) = g(\theta^Tx) = \frac{1}{1+e^{-\theta^Tx}}$</p>
-<p>这里符号含义同上，即 $h_\theta(x)$ 是预测值</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-<li><p>梯度下降</p>
-<ul>
-<li><p>$\theta$ 是无法一步优化到位的，我们需要一步一步使 $\theta$ 向函数的“坡下”走，这个向下走的“方向”就是函数在当前位置对 $\theta$ 的偏导数。</p>
-</li>
-<li><p>假设数据集只有一个特征</p>
-<p>则预测值为 $h_\theta(x)=\theta_1x+\theta_0$</p>
-<p>目标函数为</p>
-<p>$J(\theta_0,\theta_1) = \frac{1}{2m} \sum_{i=1}^{m}(h_{\theta}(x^{(i)})-y^{(i)})^2$</p>
-<p>（这里如果不乘 $\frac1m$，意味着训练样本越多 $J(\theta)$ 越大）</p>
-<p>对 $\theta_0$ 和 $\theta_1$ 分别求偏导</p>
-<p>$\frac{\partial J(\theta_0,\theta_1)}{\partial \theta_0} = \frac1m \sum_{i=1}^{m}(h_{\theta}(x^{(i)})-y^{(i)})$</p>
-<p>$\frac{\partial J(\theta_0,\theta_1)}{\partial \theta_1} = \frac{1}{m} \sum_{i=1}^{m}(h_{\theta}(x^{(i)})-y^{(i)}) * x^{(i)}$</p>
-<p>使每个参数沿梯度下降方向前进 $\alpha$ 步</p>
-<p>$\theta_0 := \theta_0 - \alpha * \frac{\partial J(\theta_0,\theta_1)}{\partial \theta_0}$</p>
-<p>$\theta_1 := \theta_1 - \alpha * \frac{\partial J(\theta_0,\theta_1)}{\partial \theta_1}$</p>
-<p>这里 $\alpha$ 称为<strong>学习率</strong>（或步长），步长过大可能略过最优点，步长太小迭代速度太慢。</p>
-</li>
-<li><p>当参数经过迭代后改变很小时，迭代结束，我们认为当前 $\theta$ 是（或近似）最优解。</p>
-</li>
-</ul>
-</li>
-</ul>
-
+          <p>机器学习</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/22/Regression_Algorithms/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -316,17 +274,17 @@
       
   
   
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/22/hello-world/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="枫落">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hexo">
+      <meta itemprop="name" content="枫落的Blog">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -339,9 +297,10 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="Created: 2020-09-22 13:54:11" itemprop="dateCreated datePublished" datetime="2020-09-22T13:54:11+08:00">2020-09-22</time>
+              <time title="创建时间：2020-09-22 13:54:11 / 修改时间：21:54:07" itemprop="dateCreated datePublished" datetime="2020-09-22T13:54:11+08:00">2020-09-22</time>
             </span>
 
           
@@ -356,19 +315,14 @@
 
       
           <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/09/22/hello-world/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -427,10 +381,10 @@
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
-          Table of Contents
+          文章目录
         </li>
         <li class="sidebar-nav-overview">
-          Overview
+          站点概览
         </li>
       </ul>
 
@@ -441,7 +395,9 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
+    <img class="site-author-image" itemprop="image" alt="枫落"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">枫落</p>
   <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -450,12 +406,20 @@
           <a href="/archives/">
         
           <span class="site-state-item-count">2</span>
-          <span class="site-state-item-name">posts</span>
+          <span class="site-state-item-name">日志</span>
         </a>
       </div>
-      <div class="site-state-item site-state-tags">
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
         <span class="site-state-item-count">1</span>
-        <span class="site-state-item-name">tags</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
@@ -485,12 +449,30 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">枫落</span>
 </div>
-  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
-  </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -513,7 +495,7 @@
 <script src="/js/motion.js"></script>
 
 
-<script src="/js/schemes/muse.js"></script>
+<script src="/js/schemes/pisces.js"></script>
 
 
 <script src="/js/next-boot.js"></script>
@@ -524,6 +506,10 @@
   
 
 
+
+
+  
+<script src="/js/local-search.js"></script>
 
 
 
