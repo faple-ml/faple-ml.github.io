@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+  <link rel="stylesheet" href="/lib/pace/pace-theme-minimal.min.css">
+  <script src="/lib/pace/pace.min.js"></script>
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="决策树是机器学习中的一个预测模型，它表示对象属性和对象值之间的一种映射。树中的每一个非叶子节点（决策点）表示对象属性的判断条件，其分支表示符合节点条件的对象。树的叶子节点表示对象所属的预测结果。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="决策树 Decision Tree">
+<meta property="og:url" content="http://example.com/2020/09/23/Decision-Tree/index.html">
+<meta property="og:site_name" content="枫落的Blog">
+<meta property="og:description" content="决策树是机器学习中的一个预测模型，它表示对象属性和对象值之间的一种映射。树中的每一个非叶子节点（决策点）表示对象属性的判断条件，其分支表示符合节点条件的对象。树的叶子节点表示对象所属的预测结果。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://math.now.sh?inline=class%20%3D%20DecisionTree%28Data%29">
+<meta property="og:image" content="https://math.now.sh?inline=y%20%3D%20DecisionTree%28x%29">
+<meta property="og:image" content="https://math.now.sh?inline=N_1">
+<meta property="og:image" content="https://math.now.sh?inline=N_i">
+<meta property="og:image" content="https://math.now.sh?inline=N_1">
+<meta property="og:image" content="https://math.now.sh?inline=N_i">
+<meta property="og:image" content="https://math.now.sh?inline=n">
+<meta property="og:image" content="https://math.now.sh?inline=P%28i%29%3D%E7%AC%AC%20i%20%E7%B1%BB%E7%9A%84%E6%95%B0%E7%9B%AE%2F%E6%80%BB%E6%95%B0%E7%9B%AE">
+<meta property="og:image" content="https://math.now.sh?inline=n">
+<meta property="og:image" content="https://math.now.sh?inline=Gini%20%3D%201%20-%20%5Csum_%7Bi%3D1%7D%5E%7Bn%7DP%28i%29%5E2">
+<meta property="og:image" content="https://math.now.sh?inline=Entropy%20%3D%20-%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%28P(i%29%20%5Ctimes%20%5Clog_2P(i))">
+<meta property="og:image" content="https://math.now.sh?inline=%5Clog">
+<meta property="og:image" content="https://math.now.sh?inline=2">
+<meta property="og:image" content="https://math.now.sh?inline=e">
+<meta property="og:image" content="https://math.now.sh?inline=Error%20%3D%201%20-%20%5Cmax%28P(i%29%7Ci%20%5Cin%20%5B1%2Cn%5D)">
+<meta property="og:image" content="https://math.now.sh?inline=%5CDelta%20%3D%20I%28parent%29%20-%20%5Csum_%7Bj%3D1%7D%5E%7BK%7D(%5Cfrac%7BN(v_j)%7D%7BN%7D%20%5Ctimes%20I(v_j))">
+<meta property="og:image" content="https://math.now.sh?inline=I">
+<meta property="og:image" content="https://math.now.sh?inline=K">
+<meta property="og:image" content="https://math.now.sh?inline=K%3D2">
+<meta property="og:image" content="https://math.now.sh?inline=v_j">
+<meta property="og:image" content="https://math.now.sh?inline=Entropy%28D%29%20%3D%20-%5Csum_%7Bi%3D1%7D%5E%7Bn%7D(P(i)%20%5Ctimes%20%5Clog_2P(i))">
+<meta property="og:image" content="https://math.now.sh?inline=Entropy_A%28D%29%20%3D%20-%5Csum_%7Bj%3D1%7D%5E%7Bv%7D(%5Cfrac%7B%7CD_j%7C%7D%7B%7CD%7C%7DEntropy(D_j))">
+<meta property="og:image" content="https://math.now.sh?inline=Gain%28A%29%20%3D%20Entropy(D)%20-%20Entropy_A(D)">
+<meta property="og:image" content="https://math.now.sh?inline=split%5C_Entropy_A%28D%29%20%3D%20-%5Csum_%7Bj%3D1%7D%5E%7Bv%7D(%5Cfrac%7B%7CD_j%7C%7D%7B%7CD%7C%7D%5Clog_2(%7B%5Cfrac%7B%7CD_j%7C%7D%7B%7CD%7C%7D%7D))">
+<meta property="og:image" content="https://math.now.sh?inline=GainRatio%28A%29%20%3D%20%5Cfrac%7BGain(A)%7D%7Bsplit%5C_Entropy_A(D)%7D">
+<meta property="og:image" content="https://math.now.sh?inline=C%28T%29%20%3D%20%5Csum_%7Bt%20%5Cin%20leaf%7DN_t%20%5Ccdot%20H(t)">
+<meta property="og:image" content="https://math.now.sh?inline=N_t">
+<meta property="og:image" content="https://math.now.sh?inline=H%28t%29">
+<meta property="og:image" content="https://math.now.sh?inline=H%28t%29%3DGini">
+<meta property="og:image" content="https://math.now.sh?inline=%5B0%2C100%5D">
+<meta property="og:image" content="https://math.now.sh?inline=%5B0%2C20%5D%2C%5B21%2C40%5D%2C...%2C%5B81%2C100%5D">
+<meta property="og:image" content="https://math.now.sh?inline=C_%5Calpha%28T%29%20%3D%20C(T)%20%2B%20%5Calpha%20%5Ccdot%20%7CT_%7Bleaf%7D%7C">
+<meta property="og:image" content="https://math.now.sh?inline=C%28T%29">
+<meta property="og:image" content="https://math.now.sh?inline=%5Calpha">
+<meta property="og:image" content="https://math.now.sh?inline=C_%5Calpha%28T%29">
+<meta property="og:image" content="https://math.now.sh?inline=n">
+<meta property="article:published_time" content="2020-09-23T11:55:18.000Z">
+<meta property="article:modified_time" content="2020-09-23T12:55:16.656Z">
+<meta property="article:author" content="枫落">
+<meta property="article:tag" content="machine learning">
+<meta property="article:tag" content="decision tree">
+<meta property="article:tag" content="random forest">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://math.now.sh?inline=class%20%3D%20DecisionTree%28Data%29">
+
+<link rel="canonical" href="http://example.com/2020/09/23/Decision-Tree/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>决策树 Decision Tree | 枫落的Blog</title>
+  
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?c4bc574efe581c2cfdcc64f9cea2087f";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">枫落的Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2020/09/23/Decision-Tree/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="枫落">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="枫落的Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          决策树 Decision Tree
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-09-23 19:55:18 / 修改时间：20:55:16" itemprop="dateCreated datePublished" datetime="2020-09-23T19:55:18+08:00">2020-09-23</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Machine-Learning/" itemprop="url" rel="index"><span itemprop="name">Machine Learning</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>决策树是机器学习中的一个预测模型，它表示对象属性和对象值之间的一种映射。树中的每一个非叶子节点（决策点）表示对象属性的判断条件，其分支表示符合节点条件的对象。树的叶子节点表示对象所属的预测结果。</p>
+<a id="more"></a>
+<h2 id="决策树">决策树</h2>
+<h3 id="构建决策树">构建决策树</h3>
+<p>决策树的构建分为两个阶段：</p>
+<ol>
+<li>
+<p>训练阶段（构造决策树）</p>
+<p><img src="https://math.now.sh?inline=class%20%3D%20DecisionTree%28Data%29" style="display:inline-block;margin: 0;"></p>
+</li>
+<li>
+<p>分类阶段（获得分类 / 决策结果）</p>
+<p><img src="https://math.now.sh?inline=y%20%3D%20DecisionTree%28x%29" style="display:inline-block;margin: 0;"></p>
+</li>
+</ol>
+<p>构建决策树的基本思想是，随着树深度的增加，节点的熵迅速地降低；熵降低的速度越快越好，越快树的高度越矮。</p>
+<h4 id="构建决策树的基本步骤">构建决策树的基本步骤</h4>
+<ol>
+<li>将所有数据看作一个节点；</li>
+<li>遍历每个特征的每一种分割方式，找到最好的分割点；</li>
+<li>分割成多个节点 <img src="https://math.now.sh?inline=N_1" style="display:inline-block;margin: 0;"> 到 <img src="https://math.now.sh?inline=N_i" style="display:inline-block;margin: 0;">；</li>
+<li>对 <img src="https://math.now.sh?inline=N_1" style="display:inline-block;margin: 0;"> 到 <img src="https://math.now.sh?inline=N_i" style="display:inline-block;margin: 0;"> 分别执行 2、3 步，直到每个节点足够 <strong> 纯粹</strong>。</li>
+</ol>
+<h5 id="评价分割点的好坏">评价分割点的好坏</h5>
+<p>如果一个分割点可以将当前的所有节点分为两类，使得每一类都 <strong> 纯度 </strong> 很高，也就是同一类的数据较多，那么就是一个好分割点。</p>
+<p>于是，我们需要量化“纯度”这个指标。</p>
+<h5 id="量化纯度">量化纯度</h5>
+<p>如果一个特征被分为 <img src="https://math.now.sh?inline=n" style="display:inline-block;margin: 0;"> 类，则每一类的比例 <img src="https://math.now.sh?inline=P%28i%29%3D%E7%AC%AC%20i%20%E7%B1%BB%E7%9A%84%E6%95%B0%E7%9B%AE%2F%E6%80%BB%E6%95%B0%E7%9B%AE" style="display:inline-block;margin: 0;">。这个特征节点会有 <img src="https://math.now.sh?inline=n" style="display:inline-block;margin: 0;"> 个分支。</p>
+<p>有三种方法来度量纯度：</p>
+<ul>
+<li>
+<p>Gini 系数</p>
+<p><img src="https://math.now.sh?inline=Gini%20%3D%201%20-%20%5Csum_%7Bi%3D1%7D%5E%7Bn%7DP%28i%29%5E2" style="display:inline-block;margin: 0;"></p>
+</li>
+<li>
+<p>熵（一般选择）</p>
+<p><img src="https://math.now.sh?inline=Entropy%20%3D%20-%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%28P(i%29%20%5Ctimes%20%5Clog_2P(i))" style="display:inline-block;margin: 0;"></p>
+<p>这里 <img src="https://math.now.sh?inline=%5Clog" style="display:inline-block;margin: 0;"> 底数可以取 <img src="https://math.now.sh?inline=2" style="display:inline-block;margin: 0;"> 或 <img src="https://math.now.sh?inline=e" style="display:inline-block;margin: 0;">。</p>
+<p>熵代表_混乱程度_，混乱程度越大，熵越大（即越不纯）。</p>
+</li>
+<li>
+<p>错误率</p>
+<p><img src="https://math.now.sh?inline=Error%20%3D%201%20-%20%5Cmax%28P(i%29%7Ci%20%5Cin%20%5B1%2Cn%5D)" style="display:inline-block;margin: 0;"></p>
+</li>
+</ul>
+<p>这三个_值越大，表示纯度越低_。</p>
+<p>然后有纯度差的概念，也就是 <strong> 信息增益 Information Gain</strong>。信息增益表示当以一个属性作为节点进行分裂后，它未分裂时的纯度与各个分支的纯度之和的差值。</p>
+<p><img src="https://math.now.sh?inline=%5CDelta%20%3D%20I%28parent%29%20-%20%5Csum_%7Bj%3D1%7D%5E%7BK%7D(%5Cfrac%7BN(v_j)%7D%7BN%7D%20%5Ctimes%20I(v_j))" style="display:inline-block;margin: 0;"></p>
+<p>其中，<img src="https://math.now.sh?inline=I" style="display:inline-block;margin: 0;"> 代表不纯度（i.e. 上面三个公式之一），<img src="https://math.now.sh?inline=K" style="display:inline-block;margin: 0;"> 代表分割的节点数（一般 <img src="https://math.now.sh?inline=K%3D2" style="display:inline-block;margin: 0;">），<img src="https://math.now.sh?inline=v_j" style="display:inline-block;margin: 0;"> 表示子节点中的记录数。</p>
+<p>即，当前节点的不纯度减去子节点不纯度的加权平均数，权重由子节点记录数与当前节点记录数的比例决定。</p>
+<h3 id="常用算法">常用算法</h3>
+<h4 id="ID3- 算法">ID3 算法</h4>
+<p>ID3 算法的核心思想是以_信息增益_度量属性选择，选择分裂后信息增益最大的属性进行分裂。</p>
+<h5 id="算法步骤">算法步骤</h5>
+<ol>
+<li>
+<p>设 D 为父节点，则 D 的熵为</p>
+<p><img src="https://math.now.sh?inline=Entropy%28D%29%20%3D%20-%5Csum_%7Bi%3D1%7D%5E%7Bn%7D(P(i)%20%5Ctimes%20%5Clog_2P(i))" style="display:inline-block;margin: 0;"></p>
+<p>（即，数据集中 y 的各个分类的占比为 P）</p>
+</li>
+<li>
+<p>对 D 的每个属性 A，计算 A 对 D 划分的期望信息</p>
+<p><img src="https://math.now.sh?inline=Entropy_A%28D%29%20%3D%20-%5Csum_%7Bj%3D1%7D%5E%7Bv%7D(%5Cfrac%7B%7CD_j%7C%7D%7B%7CD%7C%7DEntropy(D_j))" style="display:inline-block;margin: 0;"></p>
+<p>（即，一个属性中各个分类的熵乘以这个属性的占比）</p>
+</li>
+<li>
+<p>信息增益即为两者差值</p>
+<p><img src="https://math.now.sh?inline=Gain%28A%29%20%3D%20Entropy(D)%20-%20Entropy_A(D)" style="display:inline-block;margin: 0;"></p>
+<p>（这里信息增益即，以 A 属性为节点，熵值下降了多少）</p>
+</li>
+</ol>
+<p>ID3 算法就是在每次需要分裂时，计算每个属性的增益，然后选择增益最大的属性进行分裂。但 ID3 算法倾向于选择多属性，这种属性可能对分类没有太大作用，比如，假设一个属性有 10 种分类，每个分类中都只有一个数据，那么它的每个分类都很纯，信息增益会很大，但这个属性本身对决策没有帮助。C4.5 算法可以避免这个问题。</p>
+<h4 id="C4-5- 算法">C4.5 算法</h4>
+<p>C4.5 算法是 ID3 算法的优化，引入_信息增益率_的概念，用它替代信息增益作为选择属性的度量依据。</p>
+<h5 id="算法步骤 -2">算法步骤</h5>
+<ol>
+<li>
+<p>定义分裂信息</p>
+<p><img src="https://math.now.sh?inline=split%5C_Entropy_A%28D%29%20%3D%20-%5Csum_%7Bj%3D1%7D%5E%7Bv%7D(%5Cfrac%7B%7CD_j%7C%7D%7B%7CD%7C%7D%5Clog_2(%7B%5Cfrac%7B%7CD_j%7C%7D%7B%7CD%7C%7D%7D))" style="display:inline-block;margin: 0;"></p>
+</li>
+<li>
+<p>计算属性的信息增益（这一步与 ID3 中一致）</p>
+</li>
+<li>
+<p>增益率为</p>
+<p><img src="https://math.now.sh?inline=GainRatio%28A%29%20%3D%20%5Cfrac%7BGain(A)%7D%7Bsplit%5C_Entropy_A(D)%7D" style="display:inline-block;margin: 0;"></p>
+</li>
+</ol>
+<p>C4.5 算法选择增益率最大的属性。</p>
+<h4 id="CART- 算法">CART 算法</h4>
+<p>区别于前两个算法，CART 算法基于 Gini 系数。</p>
+<p>CART 算法计算以一个属性为节点的分支的_评价函数_（类似损失函数，越小越好）：</p>
+<p><img src="https://math.now.sh?inline=C%28T%29%20%3D%20%5Csum_%7Bt%20%5Cin%20leaf%7DN_t%20%5Ccdot%20H(t)" style="display:inline-block;margin: 0;"></p>
+<p>其中 <img src="https://math.now.sh?inline=N_t" style="display:inline-block;margin: 0;"> 为叶子节点中分类出的数据个数，<img src="https://math.now.sh?inline=H%28t%29" style="display:inline-block;margin: 0;"> 为熵值（这里是 Gini 系数，即 <img src="https://math.now.sh?inline=H%28t%29%3DGini" style="display:inline-block;margin: 0;">）</p>
+<h3 id="连续值离散化">连续值离散化</h3>
+<p>对于连续值（比如 <img src="https://math.now.sh?inline=%5B0%2C100%5D" style="display:inline-block;margin: 0;">），需要把它划分成离散的范围（比如 <img src="https://math.now.sh?inline=%5B0%2C20%5D%2C%5B21%2C40%5D%2C...%2C%5B81%2C100%5D" style="display:inline-block;margin: 0;">）。可以用 <strong> 贪婪算法 </strong> 选取分界点。</p>
+<h3 id="剪枝">剪枝</h3>
+<p>决策树_过度拟合_是因为节点过多（即决策树太高，分支太多），所以需要裁剪枝叶。</p>
+<h4 id="裁剪策略">裁剪策略</h4>
+<ul>
+<li>
+<p>预剪枝：在决策树构造时进行剪枝。当一个节点包含的样本数小于阈值，则不再划分。</p>
+</li>
+<li>
+<p>后剪枝（常用方案）：生成决策树后再剪枝</p>
+<p><img src="https://math.now.sh?inline=C_%5Calpha%28T%29%20%3D%20C(T)%20%2B%20%5Calpha%20%5Ccdot%20%7CT_%7Bleaf%7D%7C" style="display:inline-block;margin: 0;"></p>
+<p>其中，<img src="https://math.now.sh?inline=C%28T%29" style="display:inline-block;margin: 0;"> 是评价函数（见 CART 算法），<img src="https://math.now.sh?inline=%5Calpha" style="display:inline-block;margin: 0;"> 决定了叶子节点个数对最终的评价函数 <img src="https://math.now.sh?inline=C_%5Calpha%28T%29" style="display:inline-block;margin: 0;"> 的影响大小。叶子节点个数越多，损失越大。</p>
+<p>当一个分支需要被裁剪时，或者用单一叶子节点代替整个子树，叶节点的分类为子树中的主要分类；或者用一个子树替代另一个子树。</p>
+<p>但是后剪枝有一个主要问题，就是计算效率比较低（毕竟被裁剪的树枝也都被计算了一遍）。</p>
+</li>
+</ul>
+<h2 id="随机森林">随机森林</h2>
+<p>随机森林有两个步骤：</p>
+<ol>
+<li>Bootstraping 有放回采样（随机样本，随机特征）</li>
+<li>Bagging 有放回采样 <img src="https://math.now.sh?inline=n" style="display:inline-block;margin: 0;"> 个样本共同建立分类器</li>
+</ol>
+<p>即，随机森林需要构造多颗决策树，将测试样本放入这些决策树得到结果，如果是分类，则取众数；如果是回归，则取平均值。其中需要选择随机的样本和特征构造决策树（避免干扰样本每次都被使用）。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/machine-learning/" rel="tag"># machine learning</a>
+              <a href="/tags/decision-tree/" rel="tag"># decision tree</a>
+              <a href="/tags/random-forest/" rel="tag"># random forest</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/09/22/Regression-Algorithms/" rel="prev" title="回归算法 Regression Algorithm">
+      <i class="fa fa-chevron-left"></i> 回归算法 Regression Algorithm
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%86%B3%E7%AD%96%E6%A0%91"><span class="nav-number">1.</span> <span class="nav-text">决策树</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E5%86%B3%E7%AD%96%E6%A0%91"><span class="nav-number">1.1.</span> <span class="nav-text">构建决策树</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E5%86%B3%E7%AD%96%E6%A0%91%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.1.1.</span> <span class="nav-text">构建决策树的基本步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E8%AF%84%E4%BB%B7%E5%88%86%E5%89%B2%E7%82%B9%E7%9A%84%E5%A5%BD%E5%9D%8F"><span class="nav-number">1.1.1.1.</span> <span class="nav-text">评价分割点的好坏</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%87%8F%E5%8C%96%E7%BA%AF%E5%BA%A6"><span class="nav-number">1.1.1.2.</span> <span class="nav-text">量化纯度</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">常用算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#ID3-%20%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.1.</span> <span class="nav-text">ID3 算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">算法步骤</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#C4-5-%20%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.2.</span> <span class="nav-text">C4.5 算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AE%97%E6%B3%95%E6%AD%A5%E9%AA%A4%20-2"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">算法步骤</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#CART-%20%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.3.</span> <span class="nav-text">CART 算法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%9E%E7%BB%AD%E5%80%BC%E7%A6%BB%E6%95%A3%E5%8C%96"><span class="nav-number">1.3.</span> <span class="nav-text">连续值离散化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%AA%E6%9E%9D"><span class="nav-number">1.4.</span> <span class="nav-text">剪枝</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A3%81%E5%89%AA%E7%AD%96%E7%95%A5"><span class="nav-number">1.4.1.</span> <span class="nav-text">裁剪策略</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9A%8F%E6%9C%BA%E6%A3%AE%E6%9E%97"><span class="nav-number">2.</span> <span class="nav-text">随机森林</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="枫落"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">枫落</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">枫落</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
