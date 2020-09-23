@@ -133,7 +133,7 @@
   </entry>
   <entry>
     <title>回归算法 Regression Algorithm</title>
-    <url>/2020/09/22/Regression_Algorithms/</url>
+    <url>/2020/09/22/Regression-Algorithms/</url>
     <content><![CDATA[<p>机器学习的一般步骤是：训练样本 - 特征抽取 - 学习函数 <img src="https://math.now.sh?inline=y%5E*%20%3D%20argmax%5C%20f%28X_i%29" style="display:inline-block;margin: 0;"> - 预测。其中，为了使模型型获得更多训练，预测和学习函数是在不断循环的。</p>
 <p>机器学习的问题可以分为两种类型：<strong>分类问题 </strong> 和<strong>预测问题</strong>。分类模型是将数据最终归于某一个类型，而预测模型的结果更多的是一个具体数值。这里先讲一讲机器学习中经典的回归算法。</p>
 <a id="more"></a>
@@ -211,7 +211,7 @@
 <h2 id="Logistic- 回归">Logistic 回归</h2>
 <p>逻辑回归是一个分类算法。</p>
 <h3 id="S- 函数（Sigmoid- 函数）">S 函数（Sigmoid 函数）</h3>
-<p><img src="/2020/09/22/Regression_Algorithms/790418-20181107181130984-1052306153.png" alt="img"></p>
+<p><img src="/2020/09/22/Regression-Algorithms/790418-20181107181130984-1052306153.png" alt="img"></p>
 <ul>
 <li>
 <p>函数表达式为 <img src="https://math.now.sh?inline=g%28z%29%20%3D%20%5Cfrac%7B1%7D%7B1%2Be%5E%7B(-z)%7D%7D" style="display:inline-block;margin: 0;"></p>
