@@ -226,57 +226,456 @@
     <url>/2020/09/25/Markdown-Math/</url>
     <content><![CDATA[<p> 因为经常需要查一些数学符号的写法，有点麻烦，也没有找到一个比较全面的博客，所以决定自己整理一份，方便查找。</p>
 <a id="more"></a>
-<h4 id="显示数学公式或符号"> 显示数学公式或符号 </h4>
-<p>$ 数学公式或符号 $</p>
-<h4 id="上 - 下标"> 上 / 下标 </h4>
-<ul>
-<li> 上标：<code>^</code>
-<ul>
-<li> 比如：x^2 为 <img src="https://math.now.sh?inline=x%5E2" style="display:inline-block;margin: 0;"></li>
+<h4 id="显示数学公式或符号"><a href="# 显示数学公式或符号" class="headerlink" title="显示数学公式或符号"></a> 显示数学公式或符号 </h4><p>$ 数学公式或符号 $</p>
+<h4 id="上 - 下标"><a href="# 上 - 下标" class="headerlink" title="上 / 下标"></a> 上 / 下标 </h4><ul>
+<li> 上标：<code>^</code> </li>
+<li> 下标：<code>_</code></li>
+</ul>
+<h4 id="占位符"><a href="# 占位符" class="headerlink" title="占位符"></a> 占位符 </h4><ul>
+<li> 两个 quad 空格：<code>\qquad</code><ul>
+<li> 比如：x \qquad y 为 $x \qquad y$</li>
 </ul>
 </li>
-<li> 下标：<code>_</code>
-<ul>
-<li> 比如：x_2 为 <img src="https://math.now.sh?inline=x_2" style="display:inline-block;margin: 0;"></li>
+<li>quad 空格：<code>\quad</code><ul>
+<li> 比如：x \quad y 为 $x \quad y$</li>
+</ul>
+</li>
+<li> 空格：<code>\</code><ul>
+<li> 比如：x \ y 为 $x \ y$</li>
+</ul>
+</li>
+<li> 紧贴：<code>\!</code><ul>
+<li> 比如：x ! y 为 $x ! y$</li>
 </ul>
 </li>
 </ul>
-<h4 id="占位符"> 占位符 </h4>
-<ul>
-<li> 两个 quad 空格：<code>\qquad</code> <img src="https://math.now.sh?inline=x%20%5Cqquad%20y" style="display:inline-block;margin: 0;"></li>
-<li>quad 空格：<code>\quad</code> <img src="https://math.now.sh?inline=x%20%5Cquad%20y" style="display:inline-block;margin: 0;"></li>
-<li> 空格：<code>\</code> <img src="https://math.now.sh?inline=x%20%5C%20y" style="display:inline-block;margin: 0;"></li>
-<li> 紧贴：<code>\!</code> <img src="https://math.now.sh?inline=x%20%5C!%20y" style="display:inline-block;margin: 0;"></li>
-</ul>
-<h4 id="四则运算"> 四则运算 </h4>
-<ul>
-<li> 加：<code>+</code> <img src="https://math.now.sh?inline=x%2By" style="display:inline-block;margin: 0;"></li>
-<li> 减：<code>-</code> <img src="https://math.now.sh?inline=x-y" style="display:inline-block;margin: 0;"></li>
-<li> 乘：<code>\times</code> <img src="https://math.now.sh?inline=x%20%5Ctimes%20y" style="display:inline-block;margin: 0;"></li>
-<li> 点乘：<code>\cdot</code> <img src="https://math.now.sh?inline=x%20%5Ccdot%20y" style="display:inline-block;margin: 0;"></li>
-<li> 星乘：<code>\ast</code> 或 <code>*</code> <img src="https://math.now.sh?inline=x%20%5Cast%20y" style="display:inline-block;margin: 0;"></li>
-<li> 除：<code>\div</code> <img src="https://math.now.sh?inline=x%20%5Cdiv%20y" style="display:inline-block;margin: 0;"> 或 <code>/</code> <img src="https://math.now.sh?inline=x%2Fy" style="display:inline-block;margin: 0;"></li>
-<li> 加减：<code>\pm</code> <img src="https://math.now.sh?inline=x%20%5Cpm%20y" style="display:inline-block;margin: 0;"></li>
-<li> 减加：<code>\mp</code> <img src="https://math.now.sh?inline=x%20%5Cmp%20y" style="display:inline-block;margin: 0;"></li>
-</ul>
-<h4 id="高级运算"> 高级运算 </h4>
-<ul>
-<li> 分式：<code>\frac&#123; 分子 &#125;&#123; 分母 &#125;</code> <img src="https://math.now.sh?inline=%5Cfrac%7Bx%7D%7By%7D" style="display:inline-block;margin: 0;"> 或 <code>&#123; 分子 &#125;\over&#123; 分母 &#125;</code> <img src="https://math.now.sh?inline=%7Bx%7D%20%5Cover%20%7By%7D" style="display:inline-block;margin: 0;"></li>
-<li> 绝对值：<code>| |</code> <img src="https://math.now.sh?inline=%7Cx-y%7C" style="display:inline-block;margin: 0;"></li>
-<li> 平均数：<code>\overline&#123; 算式 &#125;</code> <img src="https://math.now.sh?inline=%5Coverline%7Bxyz%7D" style="display:inline-block;margin: 0;"> (\overline{xyz})</li>
-<li> 开方：
-<ul>
-<li> 二次：<code>\sqrt</code> <img src="https://math.now.sh?inline=%5Csqrt%7Bx%7D" style="display:inline-block;margin: 0;"> (\sqrt{x})</li>
-<li> 多次：<code>\sqrt[开方数]&#123; 被开方数 &#125;</code> <img src="https://math.now.sh?inline=%5Csqrt%5B3%5D%7Bx%2By%7D" style="display:inline-block;margin: 0;"> (\sqrt[3]{x+y})</li>
+<h4 id="四则运算"><a href="# 四则运算" class="headerlink" title="四则运算"></a> 四则运算 </h4><ul>
+<li> 加：<code>+</code></li>
+<li> 减：<code>-</code></li>
+<li> 乘：<code>\times</code></li>
+<li> 点乘：<code>\cdot</code></li>
+<li> 星乘：<code>\ast</code> 或 <code>*</code></li>
+<li> 除：<code>\div</code> 或 <code>/</code></li>
+<li> 加减：<code>\pm</code><ul>
+<li> 比如： $x \pm y$</li>
 </ul>
 </li>
-<li> 对数：<code>\log</code> <img src="https://math.now.sh?inline=%5Clog%28x%29" style="display:inline-block;margin: 0;"> (\log(x))</li>
-<li> 极限：<code>\lim</code> <img src="https://math.now.sh?inline=%5Clim%5E%7Bx%20%5Cto%20%5Cinfty%7D_%7By%20%5Cto%200%7D%5Cfrac%7Bx%7D%7By%7D" style="display:inline-block;margin: 0;"> (\lim^{x \to \infty}_{y \to 0}\frac{x}{y})</li>
-<li> 求和：</li>
-<li> 积分：</li>
-<li> 微分：</li>
-<li> 矩阵：</li>
+<li> 减加：<code>\mp</code><ul>
+<li> 比如：$x \mp y$</li>
 </ul>
+</li>
+</ul>
+<h4 id="高级运算"><a href="# 高级运算" class="headerlink" title="高级运算"></a> 高级运算 </h4><ul>
+<li> 分式：<code>\frac&#123; 分子 &#125;&#123; 分母 &#125;</code> 或 <code>&#123; 分子 &#125;\over&#123; 分母 &#125;</code><ul>
+<li> 比如：\frac{x}{y} 或 {x} \over {y} 为  $\frac{x}{y}$</li>
+</ul>
+</li>
+<li> 绝对值：<code>| |</code></li>
+<li> 平均数：<code>\overline&#123; 算式 &#125;</code><ul>
+<li> 比如：\overline{xyz} 为 $\overline{xyz}$ </li>
+</ul>
+</li>
+<li> 开方：<ul>
+<li> 二次：<code>\sqrt</code></li>
+<li> 多次：<code>\sqrt[开方数]&#123; 被开方数 &#125;</code><ul>
+<li> 比如：\sqrt[3]{x+y} 为 $\sqrt[3]{x+y}$</li>
+</ul>
+</li>
+</ul>
+</li>
+<li> 对数：<code>\log</code> <ul>
+<li> 比如：\log(x) 为 $\log(x)$</li>
+</ul>
+</li>
+<li> 极限：<code>\lim</code><ul>
+<li> 比如：\lim^{x \to \infty}_{y \to 0}\frac{x}{y} 为 $\lim^{x \to \infty}_{y \to 0}\frac{x}{y}$</li>
+</ul>
+</li>
+<li> 求和：<code>\sum</code> 或 <code>\displaystyle \sum</code><ul>
+<li> 比如：\sum^{x \to \infty}_{y \to 0}\frac{x}{y} 为 $\sum^{x \to \infty}_{y \to 0}\frac{x}{y}$</li>
+<li> 或者 \displaystyle \sum^{x \to \infty}_{y \to 0}\frac{x}{y} 为 $\displaystyle \sum^{x \to \infty}_{y \to 0}\frac{x}{y}$</li>
+</ul>
+</li>
+<li> 积分：<code>\int</code> 或 <code>\displaystyle \int</code><ul>
+<li> 比如：\int^{\infty}_{0}{xdx} 为 $\int^{\infty}_{0}{xdx}$</li>
+</ul>
+</li>
+<li> 微分（偏导）：<code>\partial</code><ul>
+<li> 比如：\frac{\partial x}{\partial y} 为 $\frac{\partial x}{\partial y}$</li>
+</ul>
+</li>
+<li> 矩阵：<code>\begin&#123;matrix&#125; \end&#123;matrix&#125;</code><ul>
+<li> 比如：\left[\begin{matrix} 1 &amp;2 &amp;\cdots &amp;4\5 &amp;6 &amp;\cdots &amp;8\vdots &amp;\vdots &amp;\ddots &amp;\vdots\13 &amp;14 &amp;\cdots &amp;16\end{matrix} \right] 为 $\left[\begin{matrix} 1 &amp;2 &amp;\cdots &amp;4\5 &amp;6 &amp;\cdots &amp;8\vdots &amp;\vdots &amp;\ddots &amp;\vdots\13 &amp;14 &amp;\cdots &amp;16\end{matrix} \right]$</li>
+</ul>
+</li>
+</ul>
+<h4 id="逻辑运算"><a href="# 逻辑运算" class="headerlink" title="逻辑运算"></a> 逻辑运算 </h4><ul>
+<li> 等于：<code>=</code></li>
+<li> 大于：<code>&gt;</code></li>
+<li> 小于：<code>&lt;</code></li>
+<li> 大于等于：<code>\geq</code></li>
+<li> 小于等于：<code>\leq</code></li>
+<li> 不等于：<code>neq</code></li>
+<li> 不大于等于：<code>\ngeq</code> 或 <code>\not\geq</code><ul>
+<li> 比如：x+y \ngeq z 为 $x+y \ngeq z$</li>
+</ul>
+</li>
+<li> 不小于等于：<code>\nleq</code> 或 <code>\not\leq</code></li>
+<li> 约等于：<code>\approx</code><ul>
+<li> 比如：x+y \approx z 为 $x+y \approx z$</li>
+</ul>
+</li>
+<li> 不约等于：<code>\not\approx</code></li>
+<li> 近似等于：<code>\simeq</code><ul>
+<li> 比如：x+y \simeq z 为 $x+y \simeq z$</li>
+</ul>
+</li>
+<li> 全等：<code>\cong</code><ul>
+<li> 比如：x+y \cong z 为 $x+y \cong z$</li>
+</ul>
+</li>
+<li> 恒等于：<code>\equiv</code><ul>
+<li> 比如：x+y \equiv z 为 $x+y \equiv z$</li>
+</ul>
+</li>
+</ul>
+<h4 id="集合运算"><a href="# 集合运算" class="headerlink" title="集合运算"></a> 集合运算 </h4><ul>
+<li> 属于：<code>\in</code><ul>
+<li> 比如：$x \in y$</li>
+</ul>
+</li>
+<li> 不属于：<code>\notin</code> 或 <code>\not\in</code><ul>
+<li> 比如：$x \notin y$</li>
+</ul>
+</li>
+<li> 子集：<code>\subset</code> 或 <code>\supset</code><ul>
+<li> 比如：$x \subset y$ 或 $x \supset y$</li>
+</ul>
+</li>
+<li> 非子集：<code>\not\subset</code> 或 <code>\not\supset</code></li>
+<li> 真子集：<code>\subseteq</code> 或 <code>\supseteq</code><ul>
+<li> 比如：$x \subseteq y$ 或 $x \supseteq y$</li>
+</ul>
+</li>
+<li> 非真子集：<code>\subsetneq</code> 或 <code>\supsetneq</code></li>
+<li> 并集：<code>\cup</code><ul>
+<li> 比如：$x \cup y$</li>
+</ul>
+</li>
+<li> 交集：<code>\cap</code><ul>
+<li> 比如：$x \cap y$</li>
+</ul>
+</li>
+<li> 差集：<code>\setminus</code><ul>
+<li> 比如：$x \setminus y$</li>
+</ul>
+</li>
+<li> 同或：<code>\bigodot</code><ul>
+<li> 比如：$x \bigodot y$</li>
+</ul>
+</li>
+<li> 同与：<code>\bigotimes</code><ul>
+<li> 比如：$x \bigotimes y$</li>
+</ul>
+</li>
+<li> 实数集：<code>\mathbb&#123;R&#125;</code><ul>
+<li> 比如：$\mathbb{R}$</li>
+</ul>
+</li>
+<li> 自然数集：<code>\mathbb&#123;Z&#125;</code><ul>
+<li> 比如：$\mathbb{Z}$</li>
+</ul>
+</li>
+<li> 空集：<code>\emptyset</code><ul>
+<li> 比如：$\emptyset$</li>
+</ul>
+</li>
+</ul>
+<h4 id="数学符号"><a href="# 数学符号" class="headerlink" title="数学符号"></a> 数学符号 </h4><ul>
+<li> 无穷：<code>\infty</code><ul>
+<li> 比如：$\infty$</li>
+</ul>
+</li>
+<li> 虚数：<code>\imath</code> 或 <code>\jmath</code><ul>
+<li> 比如：$\imath$ 或 $\jmath$</li>
+</ul>
+</li>
+</ul>
+<h4 id="戴帽符号"><a href="# 戴帽符号" class="headerlink" title="戴帽符号"></a> 戴帽符号 </h4><ul>
+<li>$\hat{a}$：<code>\hat&#123;a&#125;</code></li>
+<li>$\check{a}$：<code>\check&#123;a&#125;</code></li>
+<li>$\breve{a}$：<code>\breve&#123;a&#125;</code></li>
+<li>$\tilde{a}$：<code>\tilde&#123;a&#125;</code></li>
+<li>$\bar{a}$：<code>\bar&#123;a&#125;</code></li>
+<li>$\vec{a}$：<code>\vec&#123;a&#125;</code> （矢量）</li>
+<li>$\acute{a}$：<code>\acute&#123;a&#125;</code></li>
+<li>$\grave{a}$：<code>\grave&#123;a&#125;</code></li>
+<li>$\mathring{a}$：<code>\mathring&#123;a&#125;</code></li>
+<li>$\dot{a}$：<code>\dot&#123;a&#125;</code></li>
+<li>$\ddot{a}$：<code>\ddot&#123;a&#125;</code></li>
+</ul>
+<h4 id="箭头符号"><a href="# 箭头符号" class="headerlink" title="箭头符号"></a> 箭头符号 </h4><ul>
+<li>$\uparrow$：<code>\uparrow</code></li>
+<li>$\Uparrow$：<code>\Uparrow</code></li>
+<li>$\downarrow$：<code>\downarrow</code></li>
+<li>$\Downarrow$：<code>\Downarrow</code></li>
+<li>$\leftarrow$：<code>\leftarrow</code></li>
+<li>$\Leftarrow$：<code>\Leftarrow</code></li>
+<li>$\rightarrow$：<code>\rightarrow</code></li>
+<li>$\Rightarrow$：<code>\Rightarrow</code></li>
+<li>$\longleftarrow$：<code>\longleftarrow</code></li>
+<li>$\Longleftarrow$：<code>\Longleftarrow</code></li>
+<li>$\longrightarrow$：<code>\longrightarrow</code></li>
+<li>$\Longrightarrow$：<code>\Longrightarrow</code></li>
+</ul>
+<h4 id="省略号"><a href="# 省略号" class="headerlink" title="省略号"></a> 省略号 </h4><ul>
+<li> 底端对齐：<code>\ldots</code><ul>
+<li> 比如：1,2,\ldots,n 为 $1,2,\ldots,n$</li>
+</ul>
+</li>
+<li> 中线对齐：<code>\cdots</code><ul>
+<li> 比如：x_1^2 + x_2^2 + \cdots + x_n^2 为 $x_1^2 + x_2^2 + \cdots + x_n^2$</li>
+</ul>
+</li>
+<li> 竖直对齐：<code>\vdots</code><ul>
+<li> 比如：$\vdots$</li>
+</ul>
+</li>
+<li> 斜对齐：<code>\ddots</code><ul>
+<li> 比如：$\ddots$</li>
+</ul>
+</li>
+</ul>
+<h4 id="括号"><a href="# 括号" class="headerlink" title="括号"></a> 括号 </h4><ul>
+<li> 各种大小的小括号：<ul>
+<li>$()$：<code>()</code></li>
+<li>$\big(\big)$：<code>\big(\big)</code></li>
+<li>$\Big(\Big)$：<code>\Big(\Big)</code></li>
+<li>$\bigg(\bigg)$：<code>\bigg(\bigg)</code></li>
+<li>$\Bigg(\Bigg)$：<code>\Bigg(\Bigg)</code></li>
+</ul>
+</li>
+<li> 中括号：<code>[]</code></li>
+<li> 大括号：<code>\&#123;\&#125;</code></li>
+<li> 自适应括号：<code>\left \right</code><ul>
+<li> 比如：\left(\frac12\right) 为 $\left(\frac12\right)$</li>
+</ul>
+</li>
+<li><p> 组合公式：<code>&#123; 上位公式 \choose 下位公式 &#125;</code> 或 <code>&#123; 上位公式 \atop 下位公式 &#125;</code></p>
+<ul>
+<li> 比如：{n+1 \choose k}={n \choose k}+{n \choose k-1} 为 ${n+1 \choose k}={n \choose k}+{n \choose k-1}$</li>
+<li> 或者 \sum_{k<em>0,k_1,\ldots&gt;0 \atop k_0+k_1+\cdots=n}A\</em>{k<em>0}A\</em>{k<em>1}\cdots 为 $\sum</em>{k<em>0,k_1,\ldots&gt;0 \atop k_0+k_1+\cdots=n}A</em>{k<em>0}A</em>{k_1}\cdots$</li>
+</ul>
+</li>
+<li></li>
+</ul>
+<h4 id="希腊字母"><a href="# 希腊字母" class="headerlink" title="希腊字母"></a> 希腊字母 </h4><div class="table-container">
+<table>
+<thead>
+<tr>
+<th> 大写 </th>
+<th></th>
+<th> 小写 </th>
+<th></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$A$</td>
+<td><code>A</code></td>
+<td>$\alpha$</td>
+<td><code>\alpha</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>$B$</td>
+<td><code>B</code></td>
+<td>$\beta$</td>
+<td><code>\beta</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>$\Gamma$</td>
+<td><code>\Gamma</code></td>
+<td>$\gamma$</td>
+<td><code>\gamma</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>$\Delta$</td>
+<td><code>\Delta</code></td>
+<td>$\delta$</td>
+<td><code>\delta</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>$E$</td>
+<td><code>E</code></td>
+<td>$\epsilon$</td>
+<td><code>\epsilon</code></td>
+<td>$\varepsilon$</td>
+<td><code>\varepsilon</code></td>
+</tr>
+<tr>
+<td>$Z$</td>
+<td><code>Z</code></td>
+<td>$\zeta$</td>
+<td><code>\zeta</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>$H$</td>
+<td><code>H</code></td>
+<td>$\eta$</td>
+<td><code>\eta</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>$\Theta$</td>
+<td><code>\Theta</code></td>
+<td>$\theta$</td>
+<td><code>\theta</code></td>
+<td>$\vartheta$</td>
+<td><code>\vartheta</code></td>
+</tr>
+<tr>
+<td>$I$</td>
+<td><code>I</code></td>
+<td>$\iota$</td>
+<td><code>\iota</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>$K$</td>
+<td><code>K</code></td>
+<td>$\kappa$</td>
+<td><code>\kappa</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>$\Lambda$</td>
+<td><code>\Lambda</code></td>
+<td>$\lambda$</td>
+<td><code>\lambda</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>$M$</td>
+<td><code>M</code></td>
+<td>$\mu$</td>
+<td><code>\mu</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>$N$</td>
+<td><code>N</code></td>
+<td>$\nu$</td>
+<td><code>\nu</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>$\Xi$</td>
+<td><code>\Xi</code></td>
+<td>$\xi$</td>
+<td><code>\xi</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>$O$</td>
+<td><code>O</code></td>
+<td>$\omicron$</td>
+<td><code>\omicron</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>$\Pi$</td>
+<td><code>\Pi</code></td>
+<td>$\pi$</td>
+<td><code>\pi</code></td>
+<td>$\varpi$</td>
+<td><code>\varpi</code></td>
+</tr>
+<tr>
+<td>$P$</td>
+<td><code>P</code></td>
+<td>$\rho$</td>
+<td><code>\rho</code></td>
+<td>$\varrho$</td>
+<td><code>\varrho</code></td>
+</tr>
+<tr>
+<td>$\Sigma$</td>
+<td><code>\Sigma</code></td>
+<td>$\sigma$</td>
+<td><code>\sigma</code></td>
+<td>$\varsigma$</td>
+<td><code>\varsigma</code></td>
+</tr>
+<tr>
+<td>$T$</td>
+<td><code>T</code></td>
+<td>$\tau$</td>
+<td><code>\tau</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>$\Upsilon$</td>
+<td><code>\Upsilon</code></td>
+<td>$\upsilon$</td>
+<td><code>\upsilon</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>$\Phi$</td>
+<td><code>\Phi</code></td>
+<td>$\phi$</td>
+<td><code>\phi</code></td>
+<td>$\varphi$</td>
+<td><code>\varphi</code></td>
+</tr>
+<tr>
+<td>$X$</td>
+<td><code>X</code></td>
+<td>$\chi$</td>
+<td><code>\chi</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>$\Psi$</td>
+<td><code>\Psi</code></td>
+<td>$\psi$</td>
+<td><code>\psi</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>$\Omega$</td>
+<td><code>\Omega</code></td>
+<td>$\omega$</td>
+<td><code>\omega</code></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
 ]]></content>
       <categories>
         <category>Markdown</category>
