@@ -230,8 +230,16 @@
 <p>$ 数学公式或符号 $</p>
 <h4 id="上 - 下标"> 上 / 下标 </h4>
 <ul>
-<li> 上标：<code>x^2</code> <img src="https://math.now.sh?inline=x%5E2" style="display:inline-block;margin: 0;"></li>
-<li> 下标：<code>x_2</code> <img src="https://math.now.sh?inline=x_2" style="display:inline-block;margin: 0;"></li>
+<li> 上标：<code>^</code>
+<ul>
+<li> 比如：x^2		<img src="https://math.now.sh?inline=x%5E2" style="display:inline-block;margin: 0;"></li>
+</ul>
+</li>
+<li> 下标：<code>_</code>
+<ul>
+<li>x_2		<img src="https://math.now.sh?inline=x_2" style="display:inline-block;margin: 0;"></li>
+</ul>
+</li>
 </ul>
 <h4 id="占位符"> 占位符 </h4>
 <ul>
