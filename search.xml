@@ -91,92 +91,21 @@
       </tags>
   </entry>
   <entry>
-    <title>Xgboost</title>
-    <url>/2020/09/25/Xgboost/</url>
-    <content><![CDATA[<p>Xgboost 是一套提升树可扩展性的机器学习系统，它的算法原理就是将多棵树的预测结果相加得到最终预测结果。之前看了一些博客和视频教程，看完还是一头雾水，最后还是看了原论文才终于有了点头绪。</p>
+    <title>数据安全能力建设 Capacity-building for Data Security</title>
+    <url>/2020/10/05/Build-Capacity-for-Data-Security/</url>
+    <content><![CDATA[<p> 在 Freebuf 上看到的一篇文章，作者系统地介绍了数据安全的整体架构与一些细节，从各个方面描述了数据安全需要掌握的能力。我认为对于理解数据安全和规划数据安全的路线很有帮助，所以做了一张思维导图，供学习参考。</p>
 <a id="more"></a>
-<h3 id="正则化目标函数">正则化目标函数</h3>
-<p>首先，给定一个数据集 <img src="https://math.now.sh?inline=%5Ccal%7BD%7D" style="display:inline-block;margin: 0;"> 包含 <img src="https://math.now.sh?inline=n" style="display:inline-block;margin: 0;"> 个数据，其中每个数据有 <img src="https://math.now.sh?inline=m" style="display:inline-block;margin: 0;"> 个特征，即</p>
-<p><img src="https://math.now.sh?inline=%5Ccal%7BD%7D%3D%5C%7B%28x_i%2Cy_i%29%5C%7D(%7CD%7C%3Dn%2C%5C%20x_i%20%5Cin%20%5CBbb%7BR%7D%5Em%2C%5C%20y_i%20%5Cin%20%5CBbb%7BR%7D)" style="display:inline-block;margin: 0;"></p>
-<p>Xgboost 是一个树集成模型，它将 <img src="https://math.now.sh?inline=K" style="display:inline-block;margin: 0;"> 个树的预测结果进行求和得到最终预测值。即每一个样本的预测值为</p>
-<p><img src="https://math.now.sh?inline=%5Chat%7By%7D_i%3D%5Cphi%28x_i%29%3D%5Csum_%7Bk%3D1%7D%5E%7BK%7Df_k(x_i)%2C%5C%20f_k%20%5Cin%20%5Ccal%7BF%7D%20%5Ctag%7B1%7D" style="display:inline-block;margin: 0;"></p>
-<p>其中，</p>
-<ul>
-<li>
-<p><img src="https://math.now.sh?inline=%5Ccal%7BF%7D%3D%5C%7Bf%28x%29%3Dw_%7Bq(x)%7D%5C%7D(q%3A%5CBbb%7BR%7D%5Em%20%5Cto%20%5Cmit%7BT%7D%2C%5C%20w%20%5Cin%20%5CBbb%7BR%7D%5ET)" style="display:inline-block;margin: 0;"> 是回归树（CART 树）的空间；</p>
-</li>
-<li>
-<p><img src="https://math.now.sh?inline=q" style="display:inline-block;margin: 0;"> 代表每棵树的结构，它把样本映射到树中对应的叶子节点，比如一个样本 <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"> 被树划分到一个叶子节点，这个叶子节点的编号为 <img src="https://math.now.sh?inline=q%28x%29" style="display:inline-block;margin: 0;">。</p>
-<p>（所以 <img src="https://math.now.sh?inline=%5Ccal%7BF%7D" style="display:inline-block;margin: 0;"> 就是样本 <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"> 被每棵树结构 <img src="https://math.now.sh?inline=q" style="display:inline-block;margin: 0;"> 映射到的叶节点 <img src="https://math.now.sh?inline=q%28x%29" style="display:inline-block;margin: 0;"> 的权重的集合）</p>
-</li>
-<li>
-<p><img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"> 是树的叶子节点个数。</p>
-</li>
-<li>
-<p>每一个 <img src="https://math.now.sh?inline=f_k" style="display:inline-block;margin: 0;"> 对应一个独立的树结构 <img src="https://math.now.sh?inline=q" style="display:inline-block;margin: 0;"> 和叶子节点的权重 <img src="https://math.now.sh?inline=w" style="display:inline-block;margin: 0;">。</p>
-</li>
-</ul>
-<p>这里的树是回归树，也就是树的每个叶子节点都包含一个权重 <img src="https://math.now.sh?inline=w_i" style="display:inline-block;margin: 0;"> （第 <img src="https://math.now.sh?inline=i" style="display:inline-block;margin: 0;"> 个叶子节点的权重）。对于每一个样本，我们根据每一棵回归树把它划分到每棵树的叶子节点中，然后对这些叶子节点的权重求和得到该样本的预测结果。</p>
-<p>于是我们的目标就是最小化 <strong> 目标函数</strong>：</p>
-<p><img src="https://math.now.sh?inline=%5Ccal%7BL%7D%28%5Cphi%29%3D%5Csum_%7Bi%7Dl(%5Chat%7By%7D_i%2Cy_i)%2B%5Csum_%7Bk%7D%5COmega(f_k)%20%5Ctag%7B2%7D" style="display:inline-block;margin: 0;"></p>
-<p>其中</p>
-<ul>
-<li>
-<p><img src="https://math.now.sh?inline=%5COmega%28f%29%3D%5Cgamma%20T%20%2B%20%5Cfrac12%20%5Clambda%20%7C%7Cw%7C%7C%5E2" style="display:inline-block;margin: 0;"> （<img src="https://math.now.sh?inline=%7C%7Cw%7C%7C%5E2%20%3D%20%5Csum_%7Bj%3D1%7D%5E%7BT%7Dw_j%5E2" style="display:inline-block;margin: 0;">）</p>
-</li>
-<li>
-<p><img src="https://math.now.sh?inline=l" style="display:inline-block;margin: 0;"> 是 <strong> 损失函数</strong>，表示预测值 <img src="https://math.now.sh?inline=%5Chat%7By%7D_i" style="display:inline-block;margin: 0;"> 和真实值 <img src="https://math.now.sh?inline=y_i" style="display:inline-block;margin: 0;"> 之间的误差。</p>
-</li>
-<li>
-<p><img src="https://math.now.sh?inline=%5COmega" style="display:inline-block;margin: 0;"> 用来控制（回归树）模型的复杂度，避免过拟合。</p>
-</li>
-</ul>
-<p><img src="https://math.now.sh?inline=%282%29" style="display:inline-block;margin: 0;"> 中目标函数的优化参数是模型（即 <img src="https://math.now.sh?inline=f_k" style="display:inline-block;margin: 0;">）。因为整个 Xgboost 模型是以求和回归树的方式训练的，所以相当于训练中每一轮都加入一个回归树模型，即</p>
-<ul>
-<li>
-<p>一开始，预测值 <img src="https://math.now.sh?inline=%5Chat%7By%7D_i%5E%7B%280%29%7D%3D0" style="display:inline-block;margin: 0;"></p>
-</li>
-<li>
-<p>之后每一轮都是前一轮的预测值加上一个新的回归树模型，即在第 <img src="https://math.now.sh?inline=t" style="display:inline-block;margin: 0;"> 轮，模型的预测值为</p>
-<p><img src="https://math.now.sh?inline=%5Chat%7By%7D_i%5E%7B%28t%29%7D%3D%5Chat%7By%7D_i%5E%7B(t-1)%7D%2Bf_t(x_i)" style="display:inline-block;margin: 0;"></p>
-</li>
-</ul>
-<p>于是目标函数变为</p>
-<p><img src="https://math.now.sh?inline=%5Ccal%7BL%7D%5E%7B%28t%29%7D%3D%5Csum_%7Bi%3D1%7D%5E%7Bn%7Dl(y_i%2C%5Chat%7By%7D_i%5E%7B(t-1)%7D%2Bf_t(x_i))%2B%5COmega(f_t)" style="display:inline-block;margin: 0;"></p>
-<p>为了能快速优化目标函数，我们将目标函数进行二阶泰勒展开，得到近似目标函数（也就是说这个展开后的函数近似原来的目标函数，但并不完全相等）：</p>
-<p><img src="https://math.now.sh?inline=%5Ccal%7BL%7D%5E%7B%28t%29%7D%20%5Csimeq%20%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%5Bl(y_i%2C%5Chat%7By%7D_i%5E%7B(t-1)%7D)%2Bg_if_t(x_i)%2B%5Cfrac12h_if_t%5E2(x_i)%5D%2B%5COmega(f_t)" style="display:inline-block;margin: 0;"></p>
-<p>其中 <img src="https://math.now.sh?inline=g_i%3D%5Cpartial_%7B%5Chat%7By%7D%5E%7B%28t-1%29%7D%7Dl(y_i%2C%5Chat%7By%7D%5E%7B(t-1)%7D)" style="display:inline-block;margin: 0;">，<img src="https://math.now.sh?inline=h_i%3D%5Cpartial%5E2_%7B%5Chat%7By%7D%5E%7B%28t-1%29%7D%7Dl(y_i%2C%5Chat%7By%7D%5E%7B(t-1)%7D)" style="display:inline-block;margin: 0;"> 分别是损失函数的一阶和二阶偏导。</p>
-<p>然后，我们可以移除目标函数中的常量，得到</p>
-<p><img src="https://math.now.sh?inline=%5Cbar%7B%5Ccal%7BL%7D%7D%5E%7B%28t%29%7D%3D%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%5Bg_if_t(x_i)%2B%5Cfrac12h_if_t%5E2(x_i)%5D%2B%5COmega(f_t)%20%5Ctag%7B3%7D" style="display:inline-block;margin: 0;"></p>
-<p>令 <img src="https://math.now.sh?inline=I_j%3D%5C%7Bi%7Cq%28x_i%29%3Dj%5C%7D" style="display:inline-block;margin: 0;"> 为叶子节点 <img src="https://math.now.sh?inline=j" style="display:inline-block;margin: 0;"> 中样本的集合（即被划分到该叶子节点的所有样本），我们可以将 <img src="https://math.now.sh?inline=%283%29" style="display:inline-block;margin: 0;"> 写为</p>
-<p><img src="https://math.now.sh?inline=%5Cbegin%7Baligned%7D%20%5Cbar%7B%5Ccal%7BL%7D%7D%5E%7B%28t%29%7D%20%26%20%3D%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%5Bg_if_t(x_i)%2B%5Cfrac12h_if_t%5E2(x_i)%5D%2B%5Cgamma%20T%20%2B%20%5Cfrac12%5Clambda%5Csum_%7Bj%3D1%7D%5E%7BT%7Dw_j%5E2%20%5C%5C%20%26%20%3D%5Csum_%7Bj%3D1%7D%5E%7BT%7D%5B(%5Csum_%7Bi%20%5Cin%20I_j%7Dg_i)w_j%2B%5Cfrac12(%5Csum_%7Bi%20%5Cin%20I_j%7Dh_i%2B%5Clambda)w_j%5E2%5D%2B%5Cgamma%20T%20%5Cend%7Baligned%7D%20%5Ctag%7B4%7D" style="display:inline-block;margin: 0;"></p>
-<p>求这个目标函数的最优解</p>
-<p><img src="https://math.now.sh?inline=w_j%5E*%3D-%5Cfrac%7B%5Csum_%7Bi%20%5Cin%20I_j%7Dg_i%7D%7B%5Csum_%7Bi%20%5Cin%20I_j%7Dh_i%2B%5Clambda%7D%20%5Ctag%7B5%7D" style="display:inline-block;margin: 0;"></p>
-<p>带入 <img src="https://math.now.sh?inline=w_j%5E*" style="display:inline-block;margin: 0;"> 得到最优目标函数</p>
-<p><img src="https://math.now.sh?inline=%5Cbar%7B%5Ccal%7BL%7D%7D%5E%7B%28t%29%7D(q)%3D-%5Cfrac12%5Csum_%7Bj%3D1%7D%5E%7BT%7D%5Cfrac%7B(%5Csum_%7Bi%20%5Cin%20I_j%7Dg_i)%5E2%7D%7B%5Csum_%7Bi%20%5Cin%20I_j%7Dh_i%2B%5Clambda%7D%2B%5Cgamma%20T%20%5Ctag%7B6%7D" style="display:inline-block;margin: 0;"></p>
-<p><img src="https://math.now.sh?inline=%5Cbar%7B%5Ccal%7BL%7D%7D%5E%7B%28t%29%7D(q)" style="display:inline-block;margin: 0;"> 可以用来衡量一个树结构 <img src="https://math.now.sh?inline=q" style="display:inline-block;margin: 0;"> 的好坏（类似决策树中的纯度），<img src="https://math.now.sh?inline=%5Cbar%7B%5Ccal%7BL%7D%7D%5E%7B%28t%29%7D(q)" style="display:inline-block;margin: 0;"> 越小，树结构越好。</p>
-<h3 id="贪婪算法">贪婪算法</h3>
-<p>通常我们无法枚举所有树结构，所以我们用一种贪婪算法：从单个叶节点开始，迭代地给树添加分支。</p>
-<p>假设 <img src="https://math.now.sh?inline=I_L" style="display:inline-block;margin: 0;"> 和 <img src="https://math.now.sh?inline=I_R" style="display:inline-block;margin: 0;"> 是节点分裂后的左节点的样本集和右节点的样本集，令 <img src="https://math.now.sh?inline=I%3DI_L%20%5Ccup%20I_R" style="display:inline-block;margin: 0;">，节点切分后的损失函数为</p>
-<p><img src="https://math.now.sh?inline=%5Ccal%7BL%7D_%7Bsplit%7D%3D%5Cfrac12%5B%5Cfrac%7B%28%5Csum_%7Bi%20%5Cin%20%5Cmit%7BI%7D_L%7Dg_i%29%5E2%7D%7B%5Csum_%7Bi%20%5Cin%20%5Cmit%7BI%7D_L%7Dh_i%2B%5Clambda%7D%2B%5Cfrac%7B(%5Csum_%7Bi%20%5Cin%20%5Cmit%7BI%7D_R%7Dg_i)%5E2%7D%7B%5Csum_%7Bi%20%5Cin%20%5Cmit%7BI%7D_R%7Dh_i%2B%5Clambda%7D-%5Cfrac%7B(%5Csum_%7Bi%20%5Cin%20%5Cmit%7BI%7D%7Dg_i)%5E2%7D%7B%5Csum_%7Bi%20%5Cin%20%5Cmit%7BI%7D%7Dh_i%2B%5Clambda%7D%5D-%5Cgamma%20%5Ctag%7B7%7D" style="display:inline-block;margin: 0;"></p>
-<p>我们的目标是找到一个特征，使切分后的损失减少最大。<img src="https://math.now.sh?inline=%5Cgamma" style="display:inline-block;margin: 0;"> 除了控制树的复杂度，也作为阈值，当分裂后增益大于 <img src="https://math.now.sh?inline=%5Cgamma" style="display:inline-block;margin: 0;"> 时才分裂，起到了预剪枝作用。</p>
-<h3 id="缩减和列采样">缩减和列采样</h3>
-<p>缩减和列采样也用来防止过拟合。</p>
-<ul>
-<li>缩减是在每一步 tree boosting （增加树）后引入缩减系数 <img src="https://math.now.sh?inline=%5Ceta" style="display:inline-block;margin: 0;"> ，对新增加的权重进行收缩，减少每棵树的影响，为以后加入的树留下改进模型的空间。</li>
-<li>列采样通常用在随机森林中，它有时比传统的行采样更能防止过拟合，它也加速了并行计算。</li>
-</ul>
-<p>之后还有一部分算法，比如寻找最佳分割点等，下次补充。</p>
-<p>参考：</p>
-<p><a href="https://arxiv.org/pdf/1603.02754v1.pdf">XGBoost: A Scalable Tree Boosting System</a>（这是 Xgboost 的论文）</p>
-<p><a href="https://www.jianshu.com/p/a62f4dce3ce8">XGBoost 原理</a>（这篇基本是翻译了 Xgboost 的论文，有些英文看不明白的可以看看中文，不过我看到一半发现一处翻译错误，已在我的这篇订正）</p>
+<p><img src="/2020/10/05/Build-Capacity-for-Data-Security/Capacity-for-Data-Security.png" alt="img"></p>
+<p> 至于详细内容，还请移步大佬原文进行学习。</p>
+<p> 转载：</p>
+<p><a href="https://www.freebuf.com/articles/database/248950.html"> 数据安全能力建设思路 </a>（作者：oneeleven）</p>
 ]]></content>
       <categories>
-        <category>Machine Learning</category>
+        <category>Data Security</category>
       </categories>
       <tags>
-        <tag>machine learning</tag>
-        <tag>xgboost</tag>
+        <tag>data sec</tag>
+        <tag>freebuf</tag>
       </tags>
   </entry>
   <entry>
@@ -311,6 +240,44 @@
       </tags>
   </entry>
   <entry>
+    <title>ISO 27000</title>
+    <url>/2020/10/21/ISO-27000/</url>
+    <content><![CDATA[<p> 最近打算系统地归纳一下 ISO 27000 中信息安全管理制度（ISMS）系列标准（以下简称 ISMS 系列标准）。这个系列是欧洲的信息安全管理标准，其中 27000 是这个系列的综述（或者前导），里面包含了对系列中各个标准的介绍和对信息安全管理（ISM）中术语的定义；27001 （还有 27006，27009）是这个系列的主要标准，即 requirement standards，可以理解为必须要遵循的标准；27002 ~ 27005 等标准属于 guideline standards，即对一些安全管理方面流程的指导准则；其他就是一些针对特定方面的指导标准。我会主要关注 ISO 27001，27002 和 27005，其他的标准如果以后涉及会再做补充。</p>
+<a id="more"></a>
+<p><img src="/2020/10/21/ISO-27000/image-20201021191152112.png" alt="image-20201021191152112"></p>
+<p> 作为 ISMS 系列的综述，我认为 ISO 27000 是需要首先阅读的。ISO 27000 虽然只是一个总体概述，但通过它我们能对整个 ISMS 系列标准有一个全局的认知，对于我们了解整个安全管理体系、建立安全管理体系框架有较好的帮助。</p>
+<p>ISO 27000 的名称很清晰地总结了它的内容：Information technology - Security techniques - Information security management systems - Overview and vocabulary，信息技术、安全技术、信息安全管理系统的概述和词汇，即 ISO/IEC 27000 的目的是对 ISMS 做一个概述，并定义其相关术语。其中 “ <em>Information technology - Security techniques</em> ” 是大部分 ISMS 标准共同的标题，之后的介绍中会省略它。</p>
+<p> 根据目录，ISO 27000 主要可以分为 5 个部分：总体的介绍（Introduction，包括对 27000 这个标准和对整个 ISMS 系列的介绍），范围（Scope，ISMS 系列标准的适用范围），术语定义（Defining Terms），对信息安全管理制度（ISMS）的介绍，和对 ISMS 系列中各个标准的介绍。</p>
+<p> 我认为第一章介绍是需要在学习其他标准之前阅读的，其他比如术语定义可以在之后学习中进行参照，并不需要现在就完全理解和掌握。</p>
+<p> 第一章阐述了整个 ISMS 系列标准的用途，即组织机构可以根据这些标准构建和实施一个维护组织的信息资产安全的框架，或者用这些标准检查他们现有的安全管理体系。这里组织中的信息资产包括其经济资产、知识产权、雇工信息，或由第三方机构（或个人）委托给该组织的信息。</p>
+<p> 我们需要知道，ISMS 系列标准 </p>
+<ul>
+<li> 定义了一个安全管理制度和验证一个已有的安全管理制度的需求；</li>
+<li> 为建立、实施、维护和改善一个安全管理制度的过程提供了详细的指导和解释；</li>
+<li> 针对具体部门提供指导方针；</li>
+<li> 为安全管理制度提供合格评定标准。</li>
+</ul>
+<p> 它旨在帮助_各种规模和类型_的组织建立实施安全管理制度（这表明其适用性非常广泛，任何机构和组织都可以使用）。</p>
+<p>ISO 27000 中对 ISMS 系列中的术语进行了定义，但第一章的介绍中也提到，这里定义的术语并不代表全部，系列中其他标准也会定义新的术语。</p>
+<p> 之后在 ISO 27000 中对  ISMS 和其他标准的介绍会在学习其他标准时看到，这里就不重复了。</p>
+<p> 除正文以外，27000 的附录部分有一些需要注意的内容。</p>
+<p> 附录 A 中对于 ISMS 系列标准中条例的表述（shall，should，may，can 之类）的规定：</p>
+<ul>
+<li><em>shall</em> 和 <em>shall not</em> 表示需要严格执行；</li>
+<li><em>should</em> 和 <em>should not</em> 表示推荐这样做，但并不强求；</li>
+<li><em>may</em> 和 <em>need not</em> 表示允许这样做；</li>
+<li><em>can</em> 和 <em>cannot</em> 表示可能发生。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Information Security Management</category>
+      </categories>
+      <tags>
+        <tag>ISM</tag>
+        <tag>ISO 27000 family</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>回归算法 Regression Algorithm</title>
     <url>/2020/09/22/Regression-Algorithms/</url>
     <content><![CDATA[<p>机器学习的一般步骤是：训练样本 - 特征抽取 - 学习函数 <img src="https://math.now.sh?inline=y%5E*%20%3D%20argmax%5C%20f%28X_i%29" style="display:inline-block;margin: 0;"> - 预测。其中，为了使模型型获得更多训练，预测和学习函数是在不断循环的。</p>
@@ -427,6 +394,95 @@
         <tag>machine learning</tag>
         <tag>linear regression</tag>
         <tag>logistic regression</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Xgboost</title>
+    <url>/2020/09/25/Xgboost/</url>
+    <content><![CDATA[<p>Xgboost 是一套提升树可扩展性的机器学习系统，它的算法原理就是将多棵树的预测结果相加得到最终预测结果。之前看了一些博客和视频教程，看完还是一头雾水，最后还是看了原论文才终于有了点头绪。</p>
+<a id="more"></a>
+<h3 id="正则化目标函数">正则化目标函数</h3>
+<p>首先，给定一个数据集 <img src="https://math.now.sh?inline=%5Ccal%7BD%7D" style="display:inline-block;margin: 0;"> 包含 <img src="https://math.now.sh?inline=n" style="display:inline-block;margin: 0;"> 个数据，其中每个数据有 <img src="https://math.now.sh?inline=m" style="display:inline-block;margin: 0;"> 个特征，即</p>
+<p><img src="https://math.now.sh?inline=%5Ccal%7BD%7D%3D%5C%7B%28x_i%2Cy_i%29%5C%7D(%7CD%7C%3Dn%2C%5C%20x_i%20%5Cin%20%5CBbb%7BR%7D%5Em%2C%5C%20y_i%20%5Cin%20%5CBbb%7BR%7D)" style="display:inline-block;margin: 0;"></p>
+<p>Xgboost 是一个树集成模型，它将 <img src="https://math.now.sh?inline=K" style="display:inline-block;margin: 0;"> 个树的预测结果进行求和得到最终预测值。即每一个样本的预测值为</p>
+<p><img src="https://math.now.sh?inline=%5Chat%7By%7D_i%3D%5Cphi%28x_i%29%3D%5Csum_%7Bk%3D1%7D%5E%7BK%7Df_k(x_i)%2C%5C%20f_k%20%5Cin%20%5Ccal%7BF%7D%20%5Ctag%7B1%7D" style="display:inline-block;margin: 0;"></p>
+<p>其中，</p>
+<ul>
+<li>
+<p><img src="https://math.now.sh?inline=%5Ccal%7BF%7D%3D%5C%7Bf%28x%29%3Dw_%7Bq(x)%7D%5C%7D(q%3A%5CBbb%7BR%7D%5Em%20%5Cto%20%5Cmit%7BT%7D%2C%5C%20w%20%5Cin%20%5CBbb%7BR%7D%5ET)" style="display:inline-block;margin: 0;"> 是回归树（CART 树）的空间；</p>
+</li>
+<li>
+<p><img src="https://math.now.sh?inline=q" style="display:inline-block;margin: 0;"> 代表每棵树的结构，它把样本映射到树中对应的叶子节点，比如一个样本 <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"> 被树划分到一个叶子节点，这个叶子节点的编号为 <img src="https://math.now.sh?inline=q%28x%29" style="display:inline-block;margin: 0;">。</p>
+<p>（所以 <img src="https://math.now.sh?inline=%5Ccal%7BF%7D" style="display:inline-block;margin: 0;"> 就是样本 <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"> 被每棵树结构 <img src="https://math.now.sh?inline=q" style="display:inline-block;margin: 0;"> 映射到的叶节点 <img src="https://math.now.sh?inline=q%28x%29" style="display:inline-block;margin: 0;"> 的权重的集合）</p>
+</li>
+<li>
+<p><img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;"> 是树的叶子节点个数。</p>
+</li>
+<li>
+<p>每一个 <img src="https://math.now.sh?inline=f_k" style="display:inline-block;margin: 0;"> 对应一个独立的树结构 <img src="https://math.now.sh?inline=q" style="display:inline-block;margin: 0;"> 和叶子节点的权重 <img src="https://math.now.sh?inline=w" style="display:inline-block;margin: 0;">。</p>
+</li>
+</ul>
+<p>这里的树是回归树，也就是树的每个叶子节点都包含一个权重 <img src="https://math.now.sh?inline=w_i" style="display:inline-block;margin: 0;"> （第 <img src="https://math.now.sh?inline=i" style="display:inline-block;margin: 0;"> 个叶子节点的权重）。对于每一个样本，我们根据每一棵回归树把它划分到每棵树的叶子节点中，然后对这些叶子节点的权重求和得到该样本的预测结果。</p>
+<p>于是我们的目标就是最小化 <strong> 目标函数</strong>：</p>
+<p><img src="https://math.now.sh?inline=%5Ccal%7BL%7D%28%5Cphi%29%3D%5Csum_%7Bi%7Dl(%5Chat%7By%7D_i%2Cy_i)%2B%5Csum_%7Bk%7D%5COmega(f_k)%20%5Ctag%7B2%7D" style="display:inline-block;margin: 0;"></p>
+<p>其中</p>
+<ul>
+<li>
+<p><img src="https://math.now.sh?inline=%5COmega%28f%29%3D%5Cgamma%20T%20%2B%20%5Cfrac12%20%5Clambda%20%7C%7Cw%7C%7C%5E2" style="display:inline-block;margin: 0;"> （<img src="https://math.now.sh?inline=%7C%7Cw%7C%7C%5E2%20%3D%20%5Csum_%7Bj%3D1%7D%5E%7BT%7Dw_j%5E2" style="display:inline-block;margin: 0;">）</p>
+</li>
+<li>
+<p><img src="https://math.now.sh?inline=l" style="display:inline-block;margin: 0;"> 是 <strong> 损失函数</strong>，表示预测值 <img src="https://math.now.sh?inline=%5Chat%7By%7D_i" style="display:inline-block;margin: 0;"> 和真实值 <img src="https://math.now.sh?inline=y_i" style="display:inline-block;margin: 0;"> 之间的误差。</p>
+</li>
+<li>
+<p><img src="https://math.now.sh?inline=%5COmega" style="display:inline-block;margin: 0;"> 用来控制（回归树）模型的复杂度，避免过拟合。</p>
+</li>
+</ul>
+<p><img src="https://math.now.sh?inline=%282%29" style="display:inline-block;margin: 0;"> 中目标函数的优化参数是模型（即 <img src="https://math.now.sh?inline=f_k" style="display:inline-block;margin: 0;">）。因为整个 Xgboost 模型是以求和回归树的方式训练的，所以相当于训练中每一轮都加入一个回归树模型，即</p>
+<ul>
+<li>
+<p>一开始，预测值 <img src="https://math.now.sh?inline=%5Chat%7By%7D_i%5E%7B%280%29%7D%3D0" style="display:inline-block;margin: 0;"></p>
+</li>
+<li>
+<p>之后每一轮都是前一轮的预测值加上一个新的回归树模型，即在第 <img src="https://math.now.sh?inline=t" style="display:inline-block;margin: 0;"> 轮，模型的预测值为</p>
+<p><img src="https://math.now.sh?inline=%5Chat%7By%7D_i%5E%7B%28t%29%7D%3D%5Chat%7By%7D_i%5E%7B(t-1)%7D%2Bf_t(x_i)" style="display:inline-block;margin: 0;"></p>
+</li>
+</ul>
+<p>于是目标函数变为</p>
+<p><img src="https://math.now.sh?inline=%5Ccal%7BL%7D%5E%7B%28t%29%7D%3D%5Csum_%7Bi%3D1%7D%5E%7Bn%7Dl(y_i%2C%5Chat%7By%7D_i%5E%7B(t-1)%7D%2Bf_t(x_i))%2B%5COmega(f_t)" style="display:inline-block;margin: 0;"></p>
+<p>为了能快速优化目标函数，我们将目标函数进行二阶泰勒展开，得到近似目标函数（也就是说这个展开后的函数近似原来的目标函数，但并不完全相等）：</p>
+<p><img src="https://math.now.sh?inline=%5Ccal%7BL%7D%5E%7B%28t%29%7D%20%5Csimeq%20%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%5Bl(y_i%2C%5Chat%7By%7D_i%5E%7B(t-1)%7D)%2Bg_if_t(x_i)%2B%5Cfrac12h_if_t%5E2(x_i)%5D%2B%5COmega(f_t)" style="display:inline-block;margin: 0;"></p>
+<p>其中 <img src="https://math.now.sh?inline=g_i%3D%5Cpartial_%7B%5Chat%7By%7D%5E%7B%28t-1%29%7D%7Dl(y_i%2C%5Chat%7By%7D%5E%7B(t-1)%7D)" style="display:inline-block;margin: 0;">，<img src="https://math.now.sh?inline=h_i%3D%5Cpartial%5E2_%7B%5Chat%7By%7D%5E%7B%28t-1%29%7D%7Dl(y_i%2C%5Chat%7By%7D%5E%7B(t-1)%7D)" style="display:inline-block;margin: 0;"> 分别是损失函数的一阶和二阶偏导。</p>
+<p>然后，我们可以移除目标函数中的常量，得到</p>
+<p><img src="https://math.now.sh?inline=%5Cbar%7B%5Ccal%7BL%7D%7D%5E%7B%28t%29%7D%3D%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%5Bg_if_t(x_i)%2B%5Cfrac12h_if_t%5E2(x_i)%5D%2B%5COmega(f_t)%20%5Ctag%7B3%7D" style="display:inline-block;margin: 0;"></p>
+<p>令 <img src="https://math.now.sh?inline=I_j%3D%5C%7Bi%7Cq%28x_i%29%3Dj%5C%7D" style="display:inline-block;margin: 0;"> 为叶子节点 <img src="https://math.now.sh?inline=j" style="display:inline-block;margin: 0;"> 中样本的集合（即被划分到该叶子节点的所有样本），我们可以将 <img src="https://math.now.sh?inline=%283%29" style="display:inline-block;margin: 0;"> 写为</p>
+<p><img src="https://math.now.sh?inline=%5Cbegin%7Baligned%7D%20%5Cbar%7B%5Ccal%7BL%7D%7D%5E%7B%28t%29%7D%20%26%20%3D%5Csum_%7Bi%3D1%7D%5E%7Bn%7D%5Bg_if_t(x_i)%2B%5Cfrac12h_if_t%5E2(x_i)%5D%2B%5Cgamma%20T%20%2B%20%5Cfrac12%5Clambda%5Csum_%7Bj%3D1%7D%5E%7BT%7Dw_j%5E2%20%5C%5C%20%26%20%3D%5Csum_%7Bj%3D1%7D%5E%7BT%7D%5B(%5Csum_%7Bi%20%5Cin%20I_j%7Dg_i)w_j%2B%5Cfrac12(%5Csum_%7Bi%20%5Cin%20I_j%7Dh_i%2B%5Clambda)w_j%5E2%5D%2B%5Cgamma%20T%20%5Cend%7Baligned%7D%20%5Ctag%7B4%7D" style="display:inline-block;margin: 0;"></p>
+<p>求这个目标函数的最优解</p>
+<p><img src="https://math.now.sh?inline=w_j%5E*%3D-%5Cfrac%7B%5Csum_%7Bi%20%5Cin%20I_j%7Dg_i%7D%7B%5Csum_%7Bi%20%5Cin%20I_j%7Dh_i%2B%5Clambda%7D%20%5Ctag%7B5%7D" style="display:inline-block;margin: 0;"></p>
+<p>带入 <img src="https://math.now.sh?inline=w_j%5E*" style="display:inline-block;margin: 0;"> 得到最优目标函数</p>
+<p><img src="https://math.now.sh?inline=%5Cbar%7B%5Ccal%7BL%7D%7D%5E%7B%28t%29%7D(q)%3D-%5Cfrac12%5Csum_%7Bj%3D1%7D%5E%7BT%7D%5Cfrac%7B(%5Csum_%7Bi%20%5Cin%20I_j%7Dg_i)%5E2%7D%7B%5Csum_%7Bi%20%5Cin%20I_j%7Dh_i%2B%5Clambda%7D%2B%5Cgamma%20T%20%5Ctag%7B6%7D" style="display:inline-block;margin: 0;"></p>
+<p><img src="https://math.now.sh?inline=%5Cbar%7B%5Ccal%7BL%7D%7D%5E%7B%28t%29%7D(q)" style="display:inline-block;margin: 0;"> 可以用来衡量一个树结构 <img src="https://math.now.sh?inline=q" style="display:inline-block;margin: 0;"> 的好坏（类似决策树中的纯度），<img src="https://math.now.sh?inline=%5Cbar%7B%5Ccal%7BL%7D%7D%5E%7B%28t%29%7D(q)" style="display:inline-block;margin: 0;"> 越小，树结构越好。</p>
+<h3 id="贪婪算法">贪婪算法</h3>
+<p>通常我们无法枚举所有树结构，所以我们用一种贪婪算法：从单个叶节点开始，迭代地给树添加分支。</p>
+<p>假设 <img src="https://math.now.sh?inline=I_L" style="display:inline-block;margin: 0;"> 和 <img src="https://math.now.sh?inline=I_R" style="display:inline-block;margin: 0;"> 是节点分裂后的左节点的样本集和右节点的样本集，令 <img src="https://math.now.sh?inline=I%3DI_L%20%5Ccup%20I_R" style="display:inline-block;margin: 0;">，节点切分后的损失函数为</p>
+<p><img src="https://math.now.sh?inline=%5Ccal%7BL%7D_%7Bsplit%7D%3D%5Cfrac12%5B%5Cfrac%7B%28%5Csum_%7Bi%20%5Cin%20%5Cmit%7BI%7D_L%7Dg_i%29%5E2%7D%7B%5Csum_%7Bi%20%5Cin%20%5Cmit%7BI%7D_L%7Dh_i%2B%5Clambda%7D%2B%5Cfrac%7B(%5Csum_%7Bi%20%5Cin%20%5Cmit%7BI%7D_R%7Dg_i)%5E2%7D%7B%5Csum_%7Bi%20%5Cin%20%5Cmit%7BI%7D_R%7Dh_i%2B%5Clambda%7D-%5Cfrac%7B(%5Csum_%7Bi%20%5Cin%20%5Cmit%7BI%7D%7Dg_i)%5E2%7D%7B%5Csum_%7Bi%20%5Cin%20%5Cmit%7BI%7D%7Dh_i%2B%5Clambda%7D%5D-%5Cgamma%20%5Ctag%7B7%7D" style="display:inline-block;margin: 0;"></p>
+<p>我们的目标是找到一个特征，使切分后的损失减少最大。<img src="https://math.now.sh?inline=%5Cgamma" style="display:inline-block;margin: 0;"> 除了控制树的复杂度，也作为阈值，当分裂后增益大于 <img src="https://math.now.sh?inline=%5Cgamma" style="display:inline-block;margin: 0;"> 时才分裂，起到了预剪枝作用。</p>
+<h3 id="缩减和列采样">缩减和列采样</h3>
+<p>缩减和列采样也用来防止过拟合。</p>
+<ul>
+<li>缩减是在每一步 tree boosting （增加树）后引入缩减系数 <img src="https://math.now.sh?inline=%5Ceta" style="display:inline-block;margin: 0;"> ，对新增加的权重进行收缩，减少每棵树的影响，为以后加入的树留下改进模型的空间。</li>
+<li>列采样通常用在随机森林中，它有时比传统的行采样更能防止过拟合，它也加速了并行计算。</li>
+</ul>
+<p>之后还有一部分算法，比如寻找最佳分割点等，下次补充。</p>
+<p>参考：</p>
+<p><a href="https://arxiv.org/pdf/1603.02754v1.pdf">XGBoost: A Scalable Tree Boosting System</a>（这是 Xgboost 的论文）</p>
+<p><a href="https://www.jianshu.com/p/a62f4dce3ce8">XGBoost 原理</a>（这篇基本是翻译了 Xgboost 的论文，有些英文看不明白的可以看看中文，不过我看到一半发现一处翻译错误，已在我的这篇订正）</p>
+]]></content>
+      <categories>
+        <category>Machine Learning</category>
+      </categories>
+      <tags>
+        <tag>machine learning</tag>
+        <tag>xgboost</tag>
       </tags>
   </entry>
 </search>
