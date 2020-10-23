@@ -485,4 +485,128 @@
         <tag>xgboost</tag>
       </tags>
   </entry>
+  <entry>
+    <title>感知机 Perceptron</title>
+    <url>/2020/10/23/Perceptron/</url>
+    <content><![CDATA[<p>感知机是二类分类的线性分类模型，即输出为 <img src="https://math.now.sh?inline=%2B1" style="display:inline-block;margin: 0;"> 和 <img src="https://math.now.sh?inline=-1" style="display:inline-block;margin: 0;"> 二值，属于判别模型。感知机学习旨在将训练数据进行线性划分，有简单易实现的优点。感知机算法分为原始形式和对偶形式。</p>
+<a id="more"></a>
+<p>感知机模型的函数表示为</p>
+<p><img src="https://math.now.sh?inline=f%28x%29%3Dsign(w%20%5Ccdot%20x%2Bb)%20%5Ctag%7B1%7D" style="display:inline-block;margin: 0;"></p>
+<p>其中 <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"> 为输入的实例的特征向量，<img src="https://math.now.sh?inline=y" style="display:inline-block;margin: 0;"> 为输出的实例的类别。<img src="https://math.now.sh?inline=w" style="display:inline-block;margin: 0;"> 和 <img src="https://math.now.sh?inline=b" style="display:inline-block;margin: 0;"> 为感知机模型参数，<img src="https://math.now.sh?inline=w" style="display:inline-block;margin: 0;"> 叫做权值（weight）或权值向量，<img src="https://math.now.sh?inline=b" style="display:inline-block;margin: 0;"> 叫做偏值（bias），<img src="https://math.now.sh?inline=w%20%5Ccdot%20x" style="display:inline-block;margin: 0;"> 表示 <img src="https://math.now.sh?inline=w" style="display:inline-block;margin: 0;"> 和 <img src="https://math.now.sh?inline=x" style="display:inline-block;margin: 0;"> 的内积。</p>
+<p>sign 是符号函数，即</p>
+<p><img src="https://math.now.sh?inline=sign%28x%29%3D%5Cleft%5C%7B%5Cbegin%7Baligned%7D%20%2B1%2C%5C%20%26%20x%20%5Cgeq%200%20%5C%5C%20%20-1%2C%5C%20%26%20x%20%3C0%20%5Cend%7Baligned%7D%20%5Cright.%20%5Ctag%7B2%7D" style="display:inline-block;margin: 0;"></p>
+<p>感知机模型的假设空间是定义在特征空间的所有线性分类模型，即函数集合 <img src="https://math.now.sh?inline=%5C%7Bf%7Cf%28x%29%3Dw%20%5Ccdot%20x%2Bb%5C%7D" style="display:inline-block;margin: 0;">。</p>
+<p>（假设空间是指所有可能的模型的集合）</p>
+<p>感知机可以理解为：所有训练样本在一个特征空间中，<img src="https://math.now.sh?inline=w%20%5Ccdot%20x%2Bb" style="display:inline-block;margin: 0;"> 是特征空间中的一个超平面 <img src="https://math.now.sh?inline=S" style="display:inline-block;margin: 0;">，它将特征空间划分为两个部分（正、负两类）。这个超平面 <img src="https://math.now.sh?inline=S" style="display:inline-block;margin: 0;"> 称为分离超平面（separating hyperplane）。</p>
+<p><img src="/2020/10/23/Perceptron/image-20201023030026330.png" alt="image-20201023030026330"></p>
+<p>假设训练数据集是线性可分的（即可以找到超平面 <img src="https://math.now.sh?inline=S" style="display:inline-block;margin: 0;"> 将正负实例点完全分开），为了找到超平面 <img src="https://math.now.sh?inline=S" style="display:inline-block;margin: 0;">，我们可以定义一个（经验）损失函数并将损失函数极小化。（经验损失函数表示由所有训练样本的误差计算得到的损失函数）</p>
+<p>感知机采用的损失函数是误分类点到超平面 <img src="https://math.now.sh?inline=S" style="display:inline-block;margin: 0;"> 的总距离。首先，特征空间中任意一点 <img src="https://math.now.sh?inline=x_0" style="display:inline-block;margin: 0;"> 到超平面 <img src="https://math.now.sh?inline=S" style="display:inline-block;margin: 0;"> 的距离为：</p>
+<p><img src="https://math.now.sh?inline=%5Cfrac1%7B%7C%7Cw%7C%7C%7D%7Cw%20%5Ccdot%20x_0%3Db%7C" style="display:inline-block;margin: 0;"></p>
+<p>其中，<img src="https://math.now.sh?inline=%7C%7Cw%7C%7C" style="display:inline-block;margin: 0;"> 是 <img src="https://math.now.sh?inline=w" style="display:inline-block;margin: 0;"> 的 <img src="https://math.now.sh?inline=L_2" style="display:inline-block;margin: 0;"> 范式。</p>
+<p>其次，对误分类的数据 <img src="https://math.now.sh?inline=%28x_i%2Cy_i%29" style="display:inline-block;margin: 0;">，<img src="https://math.now.sh?inline=-y_i%28w%20%5Ccdot%20x_i%2Bb%29%3E0" style="display:inline-block;margin: 0;"> 成立。</p>
+<p>因此，误差分类点 <img src="https://math.now.sh?inline=x_i" style="display:inline-block;margin: 0;"> 到超平面 <img src="https://math.now.sh?inline=S" style="display:inline-block;margin: 0;"> 的距离是</p>
+<p><img src="https://math.now.sh?inline=-%5Cfrac1%7B%7C%7Cw%7C%7C%7D%20y_i%28w%20%5Ccdot%20x_i%2Bb%29" style="display:inline-block;margin: 0;"></p>
+<p>于是，假设超平面 <img src="https://math.now.sh?inline=S" style="display:inline-block;margin: 0;"> 的误分类点集合为 <img src="https://math.now.sh?inline=M" style="display:inline-block;margin: 0;">，那么所有误分类点到超平面 <img src="https://math.now.sh?inline=S" style="display:inline-block;margin: 0;"> 的总距离为</p>
+<p><img src="https://math.now.sh?inline=-%5Cfrac1%7B%7C%7Cw%7C%7C%7D%20%5Cdisplaystyle%20%5Csum_%7Bx_i%20%5Cin%20M%7D%20y_i%28w%20%5Ccdot%20x_i%2Bb%29" style="display:inline-block;margin: 0;"></p>
+<p>不考虑 <img src="https://math.now.sh?inline=%5Cfrac1%7B%7C%7Cw%7C%7C%7D" style="display:inline-block;margin: 0;">，就得到感知机学习的 <strong> 损失函数</strong>。</p>
+<p>所以，感知机学习的损失函数为</p>
+<p><img src="https://math.now.sh?inline=L%28w%2Cb%29%3D-%5Cdisplaystyle%20%5Csum_%7Bx_i%20%5Cin%20M%7D%20y_i(w%20%5Ccdot%20x_i%2Bb)%20%5Ctag%7B3%7D" style="display:inline-block;margin: 0;"></p>
+<p>显然，损失函数 <img src="https://math.now.sh?inline=L%28w%2Cb%29%20%5Cgeq%200" style="display:inline-block;margin: 0;">。如果没有误分类点，损失函数为 0。误分类点越少，损失函数越小。于是我们需要选取使损失函数最小的模型参数 <img src="https://math.now.sh?inline=w" style="display:inline-block;margin: 0;"> 和 <img src="https://math.now.sh?inline=b" style="display:inline-block;margin: 0;">。</p>
+<p>接下来是之前提到的两种感知机学习的算法：原始形式和对偶形式。</p>
+<p><strong>原始形式</strong></p>
+<p>已知感知机学习是找到使损失函数极小化的模型参数，即</p>
+<p><img src="https://math.now.sh?inline=%5Cdisplaystyle%20%5Cmin_%7Bw%2Cb%7D%20L%28w%2Cb%29%3D-%5Csum_%7Bx_i%20%5Cin%20M%7D%20y_i(w%20%5Ccdot%20x_i%2Bb)%20%5Ctag%7B4%7D" style="display:inline-block;margin: 0;"></p>
+<p>所以感知机学习算法是由误分类驱动的，具体采用 <strong> 随机梯度下降法</strong>：首先，任意选取一个超平面（即任意选取参数 <img src="https://math.now.sh?inline=w_0" style="display:inline-block;margin: 0;"> 和 <img src="https://math.now.sh?inline=b_0" style="display:inline-block;margin: 0;">），然后用梯度下降法不断地极小化目标函数（即损失函数）。在极小化过程中，每次随机选取一个误分类点使其梯度下降。</p>
+<p>损失函数的梯度为</p>
+<p><img src="https://math.now.sh?inline=%5Cnabla_wL%28w%2Cb%29%3D%5Cdisplaystyle%20-%5Csum_%7Bx_i%20%5Cin%20M%7Dy_ix_i" style="display:inline-block;margin: 0;"></p>
+<p><img src="https://math.now.sh?inline=%5Cnabla_bL%28w%2Cb%29%3D%5Cdisplaystyle%20-%5Csum_%7Bx_i%20%5Cin%20M%7Dy_i" style="display:inline-block;margin: 0;"></p>
+<p>随机选取一个误分类点 <img src="https://math.now.sh?inline=%28x_i%2Cy_i%29" style="display:inline-block;margin: 0;">，对 <img src="https://math.now.sh?inline=w" style="display:inline-block;margin: 0;"> 和 <img src="https://math.now.sh?inline=b" style="display:inline-block;margin: 0;"> 进行更新：</p>
+<p><img src="https://math.now.sh?inline=w%3A%3Dw%2B%5Calpha%20y_ix_i%20%5Ctag%7B5%7D" style="display:inline-block;margin: 0;"></p>
+<p><img src="https://math.now.sh?inline=b%3A%3Db%2B%5Calpha%20y_i%20%5Ctag%7B6%7D" style="display:inline-block;margin: 0;"></p>
+<p>其中 <img src="https://math.now.sh?inline=%5Calpha%20%5C%20%280%3C%5Calpha%20%5Cleq%201%29" style="display:inline-block;margin: 0;"> 是步长，又称为 <strong> 学习率</strong>（learning rate）。</p>
+<p>于是，感知机学习算法的 <strong> 原始形式 </strong> 为：</p>
+<ul>
+<li>Input：训练数据集 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;">，学习率 <img src="https://math.now.sh?inline=%5Calpha" style="display:inline-block;margin: 0;">；</li>
+<li>Output：<img src="https://math.now.sh?inline=w" style="display:inline-block;margin: 0;">，<img src="https://math.now.sh?inline=b" style="display:inline-block;margin: 0;">，感知机模型 <img src="https://math.now.sh?inline=f%28x%29%3Dsign(w%20%5Ccdot%20x%2Bb)" style="display:inline-block;margin: 0;">。</li>
+</ul>
+<ol>
+<li>
+<p>选取随机初始参数 <img src="https://math.now.sh?inline=w_0" style="display:inline-block;margin: 0;"> 和 <img src="https://math.now.sh?inline=b_0" style="display:inline-block;margin: 0;">；</p>
+</li>
+<li>
+<p>选取训练集中样本 <img src="https://math.now.sh?inline=%28x_i%2Cy_i%29" style="display:inline-block;margin: 0;">；</p>
+</li>
+<li>
+<p>如果 <img src="https://math.now.sh?inline=y_i%28w%20%5Ccdot%20x_i%2Bb%29%20%5Cleq%200" style="display:inline-block;margin: 0;">，</p>
+<p><img src="https://math.now.sh?inline=w%3A%3Dw%2B%5Calpha%20y_ix_i" style="display:inline-block;margin: 0;"></p>
+<p><img src="https://math.now.sh?inline=b%3A%3Db%2B%5Calpha%20y_i" style="display:inline-block;margin: 0;"></p>
+</li>
+<li>
+<p>重复 2、3 步，直到训练集中没有误分类点。</p>
+</li>
+</ol>
+<p>选择不同的初始参数，或者以不同的顺序选取误分类点，会得到不同的解。</p>
+<p>根据定理 <strong>Novikoff</strong> 可知，误分类的次数是有上限的，所以经过有限次搜索可以找到将训练集完全正确分开的超平面。但为了得到唯一的超平面，需要对超平面增加约束条件，这就是线性支持向量机的想法。</p>
+<p><strong>对偶形式</strong></p>
+<p>对偶形式的基本想法是，将 <img src="https://math.now.sh?inline=w" style="display:inline-block;margin: 0;"> 和 <img src="https://math.now.sh?inline=b" style="display:inline-block;margin: 0;"> 表示为实例 <img src="https://math.now.sh?inline=x_i" style="display:inline-block;margin: 0;"> 和标记 <img src="https://math.now.sh?inline=y_i" style="display:inline-block;margin: 0;"> 的线性组合的形式，通过求解其系数从而求得 <img src="https://math.now.sh?inline=w" style="display:inline-block;margin: 0;"> 和 <img src="https://math.now.sh?inline=b" style="display:inline-block;margin: 0;">。</p>
+<p>还是取初始值 <img src="https://math.now.sh?inline=w_0" style="display:inline-block;margin: 0;"> 和 <img src="https://math.now.sh?inline=b_0" style="display:inline-block;margin: 0;">，误分类点通过</p>
+<p><img src="https://math.now.sh?inline=w%3A%3Dw%2B%5Calpha%20y_ix_i" style="display:inline-block;margin: 0;"></p>
+<p><img src="https://math.now.sh?inline=b%3A%3Db%2B%5Calpha%20y_i" style="display:inline-block;margin: 0;"></p>
+<p>修改 <img src="https://math.now.sh?inline=w" style="display:inline-block;margin: 0;"> 和 <img src="https://math.now.sh?inline=b" style="display:inline-block;margin: 0;">。</p>
+<p>假设修改 <img src="https://math.now.sh?inline=n" style="display:inline-block;margin: 0;"> 次，则 <img src="https://math.now.sh?inline=w" style="display:inline-block;margin: 0;"> 和 <img src="https://math.now.sh?inline=b" style="display:inline-block;margin: 0;"> 关于 <img src="https://math.now.sh?inline=%28x_i%2Cy_i%29" style="display:inline-block;margin: 0;"> 的增量分别是 <img src="https://math.now.sh?inline=%5Ceta_iy_ix_i" style="display:inline-block;margin: 0;"> 和 <img src="https://math.now.sh?inline=%5Ceta_iy_i" style="display:inline-block;margin: 0;">，这里 <img src="https://math.now.sh?inline=%5Ceta_i%3Dn_i%5Calpha" style="display:inline-block;margin: 0;">。于是，最后学习得到的模型参数可表示为</p>
+<p><img src="https://math.now.sh?inline=w%3D%5Cdisplaystyle%20%5Csum_%7Bi%3D1%7D%5EN%20%5Ceta_iy_ix_i%20%5Ctag%7B7%7D" style="display:inline-block;margin: 0;"></p>
+<p><img src="https://math.now.sh?inline=b%3D%5Cdisplaystyle%20%5Csum_%7Bi%3D1%7D%5EN%20%5Ceta_iy_i%20%5Ctag%7B8%7D" style="display:inline-block;margin: 0;"></p>
+<p>这里 <img src="https://math.now.sh?inline=%5Ceta_i%20%5Cgeq%200%2C%5C%20i%3D1%2C2%2C...%2CN" style="display:inline-block;margin: 0;">。当 <img src="https://math.now.sh?inline=%5Calpha%3D1" style="display:inline-block;margin: 0;"> 时，表示第 <img src="https://math.now.sh?inline=i" style="display:inline-block;margin: 0;"> 个实例由于误分而进行更新的次数。实例更新次数越多，意味着它离超平面越近，也就越难正确分类。这样的实例对学习结构影响最大。</p>
+<p>感知机学习算法的 <strong> 对偶形式 </strong> 为：</p>
+<ul>
+<li>Input：训练数据集 <img src="https://math.now.sh?inline=T" style="display:inline-block;margin: 0;">，学习率 <img src="https://math.now.sh?inline=%5Calpha" style="display:inline-block;margin: 0;">；</li>
+<li>Output：<img src="https://math.now.sh?inline=%5Ceta" style="display:inline-block;margin: 0;">，<img src="https://math.now.sh?inline=b" style="display:inline-block;margin: 0;">，感知机模型 <img src="https://math.now.sh?inline=f%28x%29%3D%5Cdisplaystyle%20sign(%5Csum_%7Bj%3D1%7D%5EN%20%5Ceta_jy_jx_j%20%5Ccdot%20x%2Bb)" style="display:inline-block;margin: 0;">，其中 <img src="https://math.now.sh?inline=%5Ceta%3D%28%5Ceta_1%2C%5Ceta_2%2C...%2C%5Ceta_N%29%5ET" style="display:inline-block;margin: 0;">。</li>
+</ul>
+<ol>
+<li>
+<p>令 <img src="https://math.now.sh?inline=%5Ceta%3D0" style="display:inline-block;margin: 0;">，<img src="https://math.now.sh?inline=b%3D0" style="display:inline-block;margin: 0;">；</p>
+</li>
+<li>
+<p>选取训练集中样本 <img src="https://math.now.sh?inline=%28x_i%2Cy_i%29" style="display:inline-block;margin: 0;">；</p>
+</li>
+<li>
+<p>如果 <img src="https://math.now.sh?inline=%5Cdisplaystyle%20y_i%28%5Csum_%7Bj%3D1%7D%5EN%20%5Ceta_jy_jx_j%20%5Ccdot%20x_i%2Bb%29%20%5Cleq%200" style="display:inline-block;margin: 0;">，</p>
+<p><img src="https://math.now.sh?inline=%5Ceta_i%3A%3D%5Ceta_i%2B%5Calpha" style="display:inline-block;margin: 0;"></p>
+<p><img src="https://math.now.sh?inline=b%3A%3Db%2B%5Calpha%20y_i" style="display:inline-block;margin: 0;"></p>
+<p>（** 注意！** 这里的判断公式可以进行变形：</p>
+<p>​	将上面的公式 <img src="https://math.now.sh?inline=%288%29" style="display:inline-block;margin: 0;"> 带入 <img src="https://math.now.sh?inline=%5Cdisplaystyle%20y_i%28%5Csum_%7Bj%3D1%7D%5EN%20%5Ceta_jy_jx_j%20%5Ccdot%20x_i%2Bb%29%20%5Cleq%200" style="display:inline-block;margin: 0;"> 得到</p>
+<p>​	<img src="https://math.now.sh?inline=%5Cdisplaystyle%20y_i%28%5Csum_%7Bj%3D1%7D%5EN%20%5Ceta_jy_jx_j%20%5Ccdot%20x_i%2B%5Csum_%7Bj%3D1%7D%5EN%20%5Ceta_jy_j%29%20%5Cleq%200" style="display:inline-block;margin: 0;"></p>
+<p>​	合并后变为</p>
+<p>​	<img src="https://math.now.sh?inline=%5Cdisplaystyle%20y_i%28%5Csum_%7Bj%3D1%7D%5EN%20%5Ceta_jy_j(x_j%20%5Ccdot%20x_i%2B%201%29)%20%5Cleq%200" style="display:inline-block;margin: 0;"></p>
+<p>​	在代码中我使用这个公式进行判断，因为如果直接用 <img src="https://math.now.sh?inline=b" style="display:inline-block;margin: 0;"> 会导致结果错误，这点我也不太清楚原因）</p>
+</li>
+<li>
+<p>重复 2、3 步，直到训练集中没有误分类点。</p>
+</li>
+</ol>
+<p>对偶形式中训练实例只以内积的形式出现，可以先将所以训练数据的内积计算出来以矩阵形式储存，这就是 Gram 矩阵</p>
+<p><img src="https://math.now.sh?inline=G%3D%5Bx_i%20%5Ccdot%20x_j%5D_%7BN%20%5Ctimes%20N%7D" style="display:inline-block;margin: 0;"></p>
+<p>（在对偶形式的应用中，<img src="https://math.now.sh?inline=G%3D%5Bx_j%20%5Ccdot%20x_i%5D_%7BN%20%5Ctimes%20N%7D" style="display:inline-block;margin: 0;">，其中 <img src="https://math.now.sh?inline=i%20%5Cin%20%5B1%2CN%5D%2C%5C%20j%20%5Cin%20%5B1%2CN%5D" style="display:inline-block;margin: 0;">）</p>
+<p>在选择误分类点顺序一致时，对偶形式的解与原始形式一样。并且，对偶形式也存在多个解。</p>
+<h5 id="代码实现">代码实现</h5>
+<p>已知正样本点 <img src="https://math.now.sh?inline=x_1%3D%283%2C3%29%5ET" style="display:inline-block;margin: 0;">，<img src="https://math.now.sh?inline=x_2%3D%284%2C3%29%5ET" style="display:inline-block;margin: 0;">，负样本点 <img src="https://math.now.sh?inline=x_3%3D%281%2C1%29%5ET" style="display:inline-block;margin: 0;">，求感知机模型。</p>
+<p><strong>原始形式</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PerceptronOrigin</span>():</span></span><br><span class="line">    <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">    感知机算法的原始形式</span></span><br><span class="line"><span class="string">    &#x27;&#x27;&#x27;</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, x, y, a=<span class="number">1</span></span>):</span></span><br><span class="line">        self.x=x</span><br><span class="line">        self.y=y</span><br><span class="line">        <span class="comment"># 初始化模型参数 w 和 b （这里将它们都设为 0）</span></span><br><span class="line">        self.w=np.zeros(x.shape[<span class="number">1</span>])</span><br><span class="line">        self.b=<span class="number">0</span></span><br><span class="line">        <span class="comment"># 学习率</span></span><br><span class="line">        self.a=a</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">train</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">        找出不会误分类任何训练样本的超平面</span></span><br><span class="line"><span class="string">        :return: w, b</span></span><br><span class="line"><span class="string">        &#x27;&#x27;&#x27;</span></span><br><span class="line">        error_exist=<span class="literal">True</span></span><br><span class="line">        current=<span class="number">0</span></span><br><span class="line">        index_point=<span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> error_exist:</span><br><span class="line">            <span class="comment"># 如果存在误分类点，更新参数</span></span><br><span class="line">            <span class="keyword">if</span> (np.dot(self.x[current],self.w)+self.b)*self.y[current]&lt;=<span class="number">0</span>:</span><br><span class="line">                index_point=current</span><br><span class="line">                self.w=np.add(self.w,self.a*self.y[current]*self.x[current])</span><br><span class="line">                self.b+=self.a*self.y[current]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="comment"># 当前误分类点被正确分类后，从该点开始遍历所有点</span></span><br><span class="line">                current=(current+<span class="number">1</span>)%self.x.shape[<span class="number">0</span>]</span><br><span class="line">                <span class="comment"># 直到索引再次回到该点，表示已无误分类点</span></span><br><span class="line">                <span class="keyword">if</span> current==index_point:</span><br><span class="line">                    error_exist=<span class="literal">False</span></span><br><span class="line">        <span class="keyword">return</span> self.w,self.b</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, x</span>):</span></span><br><span class="line">        <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">        对测试样本进行预测</span></span><br><span class="line"><span class="string">        :param x: input(feature) space</span></span><br><span class="line"><span class="string">        :return: output label (+1 or -1)</span></span><br><span class="line"><span class="string">        &#x27;&#x27;&#x27;</span></span><br><span class="line">        y=np.dot(self.w,x)+self.b</span><br><span class="line">        <span class="keyword">return</span> int(y)</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/10/23/Perceptron/Figure_1.png" alt="Figure_1.png"></p>
+<p><strong>对偶形式</strong></p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PerceptronDual</span>():</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self, x, y, a=<span class="number">1</span></span>):</span></span><br><span class="line">        self.x=x</span><br><span class="line">        self.y=y</span><br><span class="line">        self.w=np.zeros(x.shape[<span class="number">1</span>])</span><br><span class="line">        self.eta=np.zeros(x.shape[<span class="number">0</span>])</span><br><span class="line">        self.b=<span class="number">0</span></span><br><span class="line">        self.a=a</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_Gram</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">        计算 Gram 矩阵</span></span><br><span class="line"><span class="string">        &#x27;&#x27;&#x27;</span></span><br><span class="line">        x=self.x.copy()</span><br><span class="line">        G=x.dot(x.T)</span><br><span class="line">        <span class="keyword">return</span> G</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">train</span>(<span class="params">self</span>):</span></span><br><span class="line">        G=self.get_Gram()</span><br><span class="line">        error_exist = <span class="literal">True</span></span><br><span class="line">        current = <span class="number">0</span></span><br><span class="line">        index_point = <span class="number">0</span></span><br><span class="line">        <span class="keyword">while</span> error_exist:</span><br><span class="line">            <span class="keyword">if</span> self.y[current]*(sum((self.eta[i]*self.y[i]*(G[current][i]+<span class="number">1</span>)) <span class="keyword">for</span> i <span class="keyword">in</span> range(self.y.shape[<span class="number">0</span>]))) &lt;=<span class="number">0</span>:</span><br><span class="line">                <span class="string">&#x27;&#x27;&#x27; 注意这个判断公式 &#x27;&#x27;&#x27;</span></span><br><span class="line">                index_point = current</span><br><span class="line">                self.eta[current]+=self.a</span><br><span class="line">                self.b+=self.a*self.y[current]</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                current=(current+<span class="number">1</span>)%self.x.shape[<span class="number">0</span>]</span><br><span class="line">                <span class="keyword">if</span> current==index_point:</span><br><span class="line">                    error_exist=<span class="literal">False</span></span><br><span class="line">        </span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(self.y.shape[<span class="number">0</span>]):</span><br><span class="line">            <span class="string">&#x27;&#x27;&#x27; 用公式计算出参数 w &#x27;&#x27;&#x27;</span></span><br><span class="line">            self.w=np.add(self.w,(self.eta[i]*self.x[i]*self.y[i]))</span><br><span class="line">        <span class="keyword">return</span> self.w,self.b</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span>(<span class="params">self, x</span>):</span></span><br><span class="line">        y=np.dot(self.w,x)+self.b</span><br><span class="line">        <span class="keyword">return</span> int(y)</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/10/23/Perceptron/Figure_2.png" alt="Figure_2.png"></p>
+<p><a href="https://github.com/faple-ml/machine-learning/blob/master/perceptron.py">完整代码</a></p>
+<h6 id="参考文献">参考文献</h6>
+<p>[1] 《统计学习方法（第二版）》李航</p>
+<p>[2] <a href="https://blog.csdn.net/huanyingzhizai/article/details/93525995">【机器学习笔记】——感知机（Perceptron）</a></p>
+]]></content>
+      <categories>
+        <category>Machine Learning</category>
+      </categories>
+      <tags>
+        <tag>machine learning</tag>
+        <tag>perceptron</tag>
+      </tags>
+  </entry>
 </search>
